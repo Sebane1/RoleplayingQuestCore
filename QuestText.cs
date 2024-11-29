@@ -6,10 +6,12 @@ namespace RoleplayingQuestCore
         int bodyExpression = -1;
         string npcName = "Name here.";
         string dialogue = "Text goes here.";
+        string dialogueAudio = "none.mp3";
 
         public int FaceExpression { get => faceExpression; set => faceExpression = value; }
         public int BodyExpression { get => bodyExpression; set => bodyExpression = value; }
         public string NpcName { get => npcName; set => npcName = value; }
         public string Dialogue { get => dialogue; set => dialogue = value; }
+        public string DialogueAudio { get => dialogueAudio; set => dialogueAudio = value; }
     }
 }

@@ -9,7 +9,7 @@ namespace RoleplayingQuestCore
         public List<RoleplayingQuest> _questChains = new List<RoleplayingQuest>();
         public Dictionary<string, int> _questProgression = new Dictionary<string, int>();
         public event EventHandler<QuestDisplayObject> OnQuestTextTriggered;
-        private float _minimumDistance = 0;
+        private float _minimumDistance = 3;
 
         public float MinimumDistance { get => _minimumDistance; set => _minimumDistance = value; }
 
@@ -47,7 +47,7 @@ namespace RoleplayingQuestCore
                         {
                             _questProgression[item.QuestId]++;
                             bool objectivesCompleted = _questProgression[item.QuestId] >= item.QuestObjectives.Count;
-                            OnQuestTextTriggered?.Invoke(this, new QuestDisplayObject(objective.QuestText, objectivesCompleted, item.NpcCharacteristics));
+                            OnQuestTextTriggered?.Invoke(this, new QuestDisplayObject(objective, objectivesCompleted, item.NpcCharacteristics));
 
                             if (objectivesCompleted)
                             {
