@@ -11,13 +11,13 @@ namespace RoleplayingQuestCore
     {
         RoleplayingQuest _currentQuest = new RoleplayingQuest();
 
-        public RoleplayingQuest CurrentQuest { get => _currentQuest;}
+        public RoleplayingQuest CurrentQuest { get => _currentQuest; }
 
         public void SaveQuest(string savePath)
         {
             if (_currentQuest != null)
             {
-                File.WriteAllText(savePath, JsonConvert.SerializeObject(_currentQuest));
+                File.WriteAllText(savePath.Replace(".quest", "null") + ".quest", JsonConvert.SerializeObject(_currentQuest));
             }
         }
 

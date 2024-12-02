@@ -12,5 +12,9 @@ namespace RoleplayingQuestCore
             _endOfQuest = endOfQuest;
             _npcsPresent = npcsPresent;
         }
+
+        public QuestObjective QuestObjective { get => _questTextList; set => _questTextList = value; }
+        public bool EndOfQuest { get => _endOfQuest; set => _endOfQuest = value; }
+        public Dictionary<string, NpcCustomization> NpcsPresent { get => _npcsPresent; set => _npcsPresent = value; }
     }
 }
