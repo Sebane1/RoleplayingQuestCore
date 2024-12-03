@@ -9,8 +9,7 @@ namespace RoleplayingQuestCore
         string _dialogueAudio = "none.mp3";
         string _dialogueBackground = "none.jpg";
 
-        bool _dialogueEndsEarlyWhenHit = false;
-        bool _dialogueSkipsToDialogueNumber = false;
+        DialogueEndBehaviourType dialogueEndBehaviour = DialogueEndBehaviourType.None;
         int _dialogueNumberToSkipTo = 0;
 
         List<BranchingChoice> _branchingChoices = new List<BranchingChoice>();
@@ -20,10 +19,29 @@ namespace RoleplayingQuestCore
         public string NpcName { get => _npcName; set => _npcName = value; }
         public string Dialogue { get => _dialogue; set => _dialogue = value; }
         public string DialogueAudio { get => _dialogueAudio; set => _dialogueAudio = value; }
-        public bool DialogueEndsEarlyWhenHit { get => _dialogueEndsEarlyWhenHit; set => _dialogueEndsEarlyWhenHit = value; }
         public List<BranchingChoice> BranchingChoices { get => _branchingChoices; set => _branchingChoices = value; }
-        public bool DialogueSkipsToDialogueNumber { get => _dialogueSkipsToDialogueNumber; set => _dialogueSkipsToDialogueNumber = value; }
+
         public int DialogueNumberToSkipTo { get => _dialogueNumberToSkipTo; set => _dialogueNumberToSkipTo = value; }
         public string DialogueBackground { get => _dialogueBackground; set => _dialogueBackground = value; }
+        public DialogueEndBehaviourType DialogueEndBehaviour { get => dialogueEndBehaviour; set => dialogueEndBehaviour = value; }
+
+        [Obsolete("This is no longer used. Please use DialogueEndBehavior property")]
+        public bool DialogueSkipsToDialogueNumber
+        {
+            set
+            {
+                if (value)
+                {
+                    dialogueEndBehaviour = DialogueEndBehaviourType.DialogueSkipsToDialogueNumber;
+                }
+            }
+        }
+
+        public enum DialogueEndBehaviourType
+        {
+            None = 0,
+            DialogueSkipsToDialogueNumber = 1,
+            DialogueEndsEarlyWhenHit = 2,
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace RoleplayingQuestCore
         Vector3 _coordinates = new Vector3();
         QuestPointType typeOfQuestPoint = QuestPointType.NPC;
         ObjectiveStatusType _objectiveStatus = ObjectiveStatusType.Complete;
-        ObjectiveTriggerType _typeOfObjectiveTrigger = ObjectiveTriggerType.DoEmote;
+        ObjectiveTriggerType _typeOfObjectiveTrigger = ObjectiveTriggerType.NormalInteraction;
         List<QuestText> _questText = new List<QuestText>();
         string triggerText = "";
 

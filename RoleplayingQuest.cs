@@ -7,13 +7,18 @@ namespace RoleplayingQuestCore
         string _questName = "Quest Name Goes Here";
         string _questDescription = "Quest Description";
         string _questId = "";
+        string _questThumbnailPath = "";
+        QuestRewardType _typeOfReward = QuestRewardType.None;
+        string _questReward = "";
         List<QuestObjective> _questObjectives = new List<QuestObjective>();
         Dictionary<string, NpcCustomization> _npcsPresent = new Dictionary<string, NpcCustomization>();
         QuestContentRating _contentRating = QuestContentRating.AllAges;
         bool _isSubQuest = false;
+        bool _hasQuestAcceptancePopup = true;
         public RoleplayingQuest()
         {
             _questId = Guid.NewGuid().ToString();
+            SubQuestId = _questId;
         }
 
         public string QuestAuthor { get => _questAuthor; set => _questAuthor = value; }
@@ -28,6 +33,12 @@ namespace RoleplayingQuestCore
         public QuestContentRating ContentRating { get => _contentRating; set => _contentRating = value; }
         public string QuestName { get => _questName; set => _questName = value; }
         public bool IsSubQuest { get => _isSubQuest; set => _isSubQuest = value; }
+        public string SubQuestId { get; internal set; }
+        public bool HasQuestAcceptancePopup { get => _hasQuestAcceptancePopup; set => _hasQuestAcceptancePopup = value; }
+        public QuestRewardType TypeOfReward { get => _typeOfReward; set => _typeOfReward = value; }
+        public string QuestReward { get => _questReward; set => _questReward = value; }
+        public QuestRewardType TypeOfReward1 { get => _typeOfReward; set => _typeOfReward = value; }
+        public string QuestThumbnailPath { get => _questThumbnailPath; set => _questThumbnailPath = value; }
 
         public void CopyAuthorData(RoleplayingQuest currentQuest)
         {
@@ -35,6 +46,7 @@ namespace RoleplayingQuestCore
             _questName = currentQuest.QuestName;
             _questDescription = currentQuest.QuestDescription;
             _questId = currentQuest.QuestId;
+            SubQuestId = Guid.NewGuid().ToString();
         }
 
         public enum QuestContentRating
@@ -42,6 +54,13 @@ namespace RoleplayingQuestCore
             AllAges = 0,
             Teen = 1,
             AdultsOnly = 2
+        }
+        public enum QuestRewardType
+        {
+            None = 0,
+            SecretMessage = 1,
+            DownloadLink = 2,
+            MediaFile = 3
         }
     }
 }
