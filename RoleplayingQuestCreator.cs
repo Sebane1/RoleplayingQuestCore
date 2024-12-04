@@ -17,7 +17,8 @@ namespace RoleplayingQuestCore
         {
             if (_currentQuest != null)
             {
-                File.WriteAllText(savePath.Replace(".quest", "null") + ".quest", JsonConvert.SerializeObject(_currentQuest));
+                Directory.CreateDirectory(savePath);
+                File.WriteAllText(Path.Combine(savePath, "main.quest"), JsonConvert.SerializeObject(_currentQuest));
             }
         }
 

@@ -8,6 +8,7 @@ namespace RoleplayingQuestCore
         string _questDescription = "Quest Description";
         string _questId = "";
         string _questThumbnailPath = "";
+        string _foundPath = "";
         QuestRewardType _typeOfReward = QuestRewardType.None;
         string _questReward = "";
         List<QuestObjective> _questObjectives = new List<QuestObjective>();
@@ -39,6 +40,7 @@ namespace RoleplayingQuestCore
         public string QuestReward { get => _questReward; set => _questReward = value; }
         public QuestRewardType TypeOfReward1 { get => _typeOfReward; set => _typeOfReward = value; }
         public string QuestThumbnailPath { get => _questThumbnailPath; set => _questThumbnailPath = value; }
+        public string FoundPath { get => _foundPath; set => _foundPath = value; }
 
         public void CopyAuthorData(RoleplayingQuest currentQuest)
         {

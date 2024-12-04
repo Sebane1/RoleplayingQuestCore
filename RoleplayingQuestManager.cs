@@ -58,6 +58,7 @@ namespace RoleplayingQuestCore
         public async void AddQuest(string questPath)
         {
             var questChain = JsonConvert.DeserializeObject<RoleplayingQuest>(await File.ReadAllTextAsync(questPath));
+            questChain.FoundPath = Path.GetDirectoryName(questPath);
             _questChains[questChain.QuestId] = questChain;
             _questProgression[questChain.QuestId] = 0;
         }
@@ -90,7 +91,7 @@ namespace RoleplayingQuestCore
                             {
                                 if (!item.HasQuestAcceptancePopup)
                                 {
-                                    OnQuestTextTriggered?.Invoke(this, new QuestDisplayObject(objective, delegate
+                                    OnQuestTextTriggered?.Invoke(this, new QuestDisplayObject(item, objective, delegate
                                     {
                                         var knownQuestItem = item;
                                         var knownObjective = objective;

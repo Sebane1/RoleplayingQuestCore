@@ -10,6 +10,8 @@ namespace RoleplayingQuestCore
         string _dialogueBackground = "none.jpg";
 
         DialogueEndBehaviourType dialogueEndBehaviour = DialogueEndBehaviourType.None;
+        DialogueBackgroundType _dialogueBackgroundType = DialogueBackgroundType.None;
+
         int _dialogueNumberToSkipTo = 0;
 
         List<BranchingChoice> _branchingChoices = new List<BranchingChoice>();
@@ -37,11 +39,19 @@ namespace RoleplayingQuestCore
             }
         }
 
+        public DialogueBackgroundType TypeOfDialogueBackground { get => _dialogueBackgroundType; set => _dialogueBackgroundType = value; }
+
         public enum DialogueEndBehaviourType
         {
             None = 0,
             DialogueSkipsToDialogueNumber = 1,
             DialogueEndsEarlyWhenHit = 2,
+        }
+        public enum DialogueBackgroundType
+        {
+            None = 0,
+            Image = 1,
+            Video = 2,
         }
     }
 }
