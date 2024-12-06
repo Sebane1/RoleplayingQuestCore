@@ -7,9 +7,9 @@ namespace RoleplayingQuestCore
     {
         private const int V = 3;
         private IQuestGameObject _mainPlayer;
-        public Dictionary<string, RoleplayingQuest> _questChains = new Dictionary<string, RoleplayingQuest>();
-        public Dictionary<string, string> _completedQuestChains = new Dictionary<string, string>();
-        public Dictionary<string, int> _questProgression = new Dictionary<string, int>();
+        private Dictionary<string, RoleplayingQuest> _questChains = new Dictionary<string, RoleplayingQuest>();
+        private Dictionary<string, string> _completedQuestChains = new Dictionary<string, string>();
+        private Dictionary<string, int> _questProgression = new Dictionary<string, int>();
         public event EventHandler<QuestDisplayObject> OnQuestTextTriggered;
         private float _minimumDistance = 3;
         public event EventHandler OnQuestStarted;
@@ -24,9 +24,13 @@ namespace RoleplayingQuestCore
         }
 
         public float MinimumDistance { get => _minimumDistance; set => _minimumDistance = value; }
-        public Dictionary<RoleplayingQuest, QuestObjective> GetActiveQuestChainObjectives(int territoryId)
+        public Dictionary<string, RoleplayingQuest> QuestChains { get => _questChains; set => _questChains = value; }
+        public Dictionary<string, string> CompletedQuestChains { get => _completedQuestChains; set => _completedQuestChains = value; }
+        public Dictionary<string, int> QuestProgression { get => _questProgression; set => _questProgression = value; }
+
+        public Dictionary<RoleplayingQuest, Tuple<int,QuestObjective>> GetActiveQuestChainObjectives(int territoryId)
         {
-            Dictionary<RoleplayingQuest, QuestObjective> list = new Dictionary<RoleplayingQuest, QuestObjective>();
+            Dictionary<RoleplayingQuest, Tuple<int, QuestObjective>> list = new Dictionary<RoleplayingQuest, Tuple<int, QuestObjective>>();
             for (int i = 0; i < _questChains.Count; i++)
             {
                 var value = _questChains.ElementAt(i);
@@ -38,14 +42,14 @@ namespace RoleplayingQuestCore
                         var objective = value.Value.QuestObjectives[value2];
                         if (objective.TerritoryId == territoryId)
                         {
-                            list[value.Value] = (objective);
+                            list[value.Value] = new Tuple<int, QuestObjective>(value2, objective);
                         }
                     }
                 }
                 else
                 {
                     _questProgression[value.Key] = 0;
-                    list[value.Value] = (value.Value.QuestObjectives[_questProgression[value.Key]]);
+                    list[value.Value] = new Tuple<int, QuestObjective>(0,(value.Value.QuestObjectives[_questProgression[value.Key]]));
                 }
             }
             return list;
