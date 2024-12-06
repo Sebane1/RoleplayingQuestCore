@@ -12,7 +12,7 @@ namespace RoleplayingQuestCore
         QuestRewardType _typeOfReward = QuestRewardType.None;
         string _questReward = "";
         List<QuestObjective> _questObjectives = new List<QuestObjective>();
-        Dictionary<string, NpcCustomization> _npcsPresent = new Dictionary<string, NpcCustomization>();
+        Dictionary<int, NpcInformation> _npcCustomization = new Dictionary<int, NpcInformation>();
         QuestContentRating _contentRating = QuestContentRating.AllAges;
         bool _isSubQuest = false;
         bool _hasQuestAcceptancePopup = true;
@@ -26,7 +26,7 @@ namespace RoleplayingQuestCore
         public string QuestId { get => _questId; set => _questId = value; }
         public List<QuestObjective> QuestObjectives { get => _questObjectives; set => _questObjectives = value; }
         public string QuestDescription { get => _questDescription; set => _questDescription = value; }
-        public Dictionary<string, NpcCustomization> NpcCharacteristics { get => _npcsPresent; set => _npcsPresent = value; }
+        public Dictionary<int, NpcInformation> NpcCustomizations { get => _npcCustomization; set => _npcCustomization = value; }
 
         /// <summary>
         /// Yes, content ratings are needed.

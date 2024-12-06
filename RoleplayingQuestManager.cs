@@ -24,9 +24,9 @@ namespace RoleplayingQuestCore
         }
 
         public float MinimumDistance { get => _minimumDistance; set => _minimumDistance = value; }
-        public List<QuestObjective> GetActiveQuestChainObjectives(int territoryId)
+        public Dictionary<RoleplayingQuest, QuestObjective> GetActiveQuestChainObjectives(int territoryId)
         {
-            List<QuestObjective> list = new List<QuestObjective>();
+            Dictionary<RoleplayingQuest, QuestObjective> list = new Dictionary<RoleplayingQuest, QuestObjective>();
             for (int i = 0; i < _questChains.Count; i++)
             {
                 var value = _questChains.ElementAt(i);
@@ -38,14 +38,14 @@ namespace RoleplayingQuestCore
                         var objective = value.Value.QuestObjectives[value2];
                         if (objective.TerritoryId == territoryId)
                         {
-                            list.Add(objective);
+                            list[value.Value] = (objective);
                         }
                     }
                 }
                 else
                 {
                     _questProgression[value.Key] = 0;
-                    list.Add(value.Value.QuestObjectives[_questProgression[value.Key]]);
+                    list[value.Value] = (value.Value.QuestObjectives[_questProgression[value.Key]]);
                 }
             }
             return list;
@@ -75,7 +75,7 @@ namespace RoleplayingQuestCore
             _questProgression.Remove(quest.QuestId);
         }
 
-        public void ProgressTriggerQuestObjective()
+        public void ProgressTriggerQuestObjective(QuestObjective.ObjectiveTriggerType triggerType = QuestObjective.ObjectiveTriggerType.NormalInteraction, string triggerPhrase = "")
         {
             foreach (var item in _questChains.Values)
             {
@@ -89,35 +89,52 @@ namespace RoleplayingQuestCore
                         {
                             if (Vector3.Distance(objective.Coordinates, _mainPlayer.Position) < _minimumDistance)
                             {
-                                if (!item.HasQuestAcceptancePopup)
+                                bool conditionsToProceedWereMet = false;
+                                switch (objective.TypeOfObjectiveTrigger)
                                 {
-                                    OnQuestTextTriggered?.Invoke(this, new QuestDisplayObject(item, objective, delegate
-                                    {
-                                        var knownQuestItem = item;
-                                        var knownObjective = objective;
-                                        bool firstObjective = _questProgression[item.QuestId] == 0;
-                                        if (firstObjective)
-                                        {
-                                            OnQuestStarted?.Invoke(this, EventArgs.Empty);
-                                        }
-                                        _questProgression[knownQuestItem.QuestId]++;
-                                        bool objectivesCompleted = _questProgression[item.QuestId] >= item.QuestObjectives.Count;
-                                        if (objectivesCompleted)
-                                        {
-                                            _questChains.Remove(knownQuestItem.QuestId);
-                                            _questProgression.Remove(knownQuestItem.QuestId);
-                                            _completedQuestChains[knownQuestItem.QuestId] = knownQuestItem.SubQuestId;
-                                            OnQuestCompleted?.Invoke(this, EventArgs.Empty);
-                                        }
-                                        if (!firstObjective && !objectivesCompleted)
-                                        {
-                                            OnObjectiveCompleted?.Invoke(this, knownObjective);
-                                        }
-                                    }, item.NpcCharacteristics));
+                                    case QuestObjective.ObjectiveTriggerType.NormalInteraction:
+                                        conditionsToProceedWereMet = true;
+                                        break;
+                                    case QuestObjective.ObjectiveTriggerType.DoEmote:
+                                        conditionsToProceedWereMet = objective.TriggerText == triggerPhrase;
+                                        break;
+                                    case QuestObjective.ObjectiveTriggerType.SayPhrase:
+                                        conditionsToProceedWereMet = 
+                                        objective.TriggerText.ToLower().Replace(" ", "").Contains(triggerPhrase.ToLower().Replace(" ", ""));
+                                        break;
                                 }
-                                else
+                                if (conditionsToProceedWereMet)
                                 {
-                                    OnQuestAcceptancePopup?.Invoke(this, item);
+                                    if (!item.HasQuestAcceptancePopup)
+                                    {
+                                        OnQuestTextTriggered?.Invoke(this, new QuestDisplayObject(item, objective, delegate
+                                        {
+                                            var knownQuestItem = item;
+                                            var knownObjective = objective;
+                                            bool firstObjective = _questProgression[item.QuestId] == 0;
+                                            if (firstObjective)
+                                            {
+                                                OnQuestStarted?.Invoke(this, EventArgs.Empty);
+                                            }
+                                            _questProgression[knownQuestItem.QuestId]++;
+                                            bool objectivesCompleted = _questProgression[item.QuestId] >= item.QuestObjectives.Count;
+                                            if (objectivesCompleted)
+                                            {
+                                                _questChains.Remove(knownQuestItem.QuestId);
+                                                _questProgression.Remove(knownQuestItem.QuestId);
+                                                _completedQuestChains[knownQuestItem.QuestId] = knownQuestItem.SubQuestId;
+                                                OnQuestCompleted?.Invoke(this, EventArgs.Empty);
+                                            }
+                                            if (!firstObjective && !objectivesCompleted)
+                                            {
+                                                OnObjectiveCompleted?.Invoke(this, knownObjective);
+                                            }
+                                        }, item.NpcCustomizations));
+                                    }
+                                    else
+                                    {
+                                        OnQuestAcceptancePopup?.Invoke(this, item);
+                                    }
                                 }
                                 break;
                             }
