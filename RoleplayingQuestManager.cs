@@ -11,7 +11,7 @@ namespace RoleplayingQuestCore
         public Dictionary<string, string> _completedQuestChains = new Dictionary<string, string>();
         public Dictionary<string, int> _questProgression = new Dictionary<string, int>();
         public event EventHandler<QuestDisplayObject> OnQuestTextTriggered;
-        private float _minimumDistance = V;
+        private float _minimumDistance = 3;
         public event EventHandler OnQuestStarted;
         public event EventHandler OnQuestCompleted;
         public event EventHandler<QuestObjective> OnObjectiveCompleted;
@@ -55,9 +55,9 @@ namespace RoleplayingQuestCore
             _mainPlayer = gameObject;
         }
 
-        public async void AddQuest(string questPath)
+        public void AddQuest(string questPath)
         {
-            var questChain = JsonConvert.DeserializeObject<RoleplayingQuest>(await File.ReadAllTextAsync(questPath));
+            var questChain = JsonConvert.DeserializeObject<RoleplayingQuest>(File.ReadAllText(questPath));
             questChain.FoundPath = Path.GetDirectoryName(questPath);
             _questChains[questChain.QuestId] = questChain;
             _questProgression[questChain.QuestId] = 0;
@@ -74,7 +74,22 @@ namespace RoleplayingQuestCore
             _questChains.Remove(quest.QuestId);
             _questProgression.Remove(quest.QuestId);
         }
-
+        public List<QuestObjective> GetCurrentObjectives()
+        {
+            List<QuestObjective> list = new List<QuestObjective>();
+            foreach (var item in _questChains.Values)
+            {
+                if (_questProgression.ContainsKey(item.QuestId))
+                {
+                    var questProgression = _questProgression[item.QuestId];
+                    if (_questProgression[item.QuestId] > 0)
+                    {
+                        list.Add(item.QuestObjectives[questProgression]);
+                    }
+                }
+            }
+            return list;
+        }
         public void ProgressTriggerQuestObjective(QuestObjective.ObjectiveTriggerType triggerType = QuestObjective.ObjectiveTriggerType.NormalInteraction, string triggerPhrase = "")
         {
             foreach (var item in _questChains.Values)
@@ -99,7 +114,7 @@ namespace RoleplayingQuestCore
                                         conditionsToProceedWereMet = objective.TriggerText == triggerPhrase;
                                         break;
                                     case QuestObjective.ObjectiveTriggerType.SayPhrase:
-                                        conditionsToProceedWereMet = 
+                                        conditionsToProceedWereMet =
                                         objective.TriggerText.ToLower().Replace(" ", "").Contains(triggerPhrase.ToLower().Replace(" ", ""));
                                         break;
                                 }
