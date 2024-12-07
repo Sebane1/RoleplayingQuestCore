@@ -2,8 +2,8 @@ namespace RoleplayingQuestCore
 {
     public class QuestText
     {
-        int _faceExpression = -1;
-        int _bodyExpression = -1;
+        int _faceExpression = 0;
+        int _bodyExpression = 0;
         string _npcName = "Name here.";
         string _dialogue = "Text goes here.";
         string _dialogueAudio = "none.mp3";
@@ -16,8 +16,34 @@ namespace RoleplayingQuestCore
 
         List<BranchingChoice> _branchingChoices = new List<BranchingChoice>();
 
-        public int FaceExpression { get => _faceExpression; set => _faceExpression = value; }
-        public int BodyExpression { get => _bodyExpression; set => _bodyExpression = value; }
+        public int FaceExpression
+        {
+            get => _faceExpression;
+
+            set
+            {
+                if (value < 0)
+                {
+                    value = 0;
+                }
+                _faceExpression = value;
+            }
+        }
+
+        public int BodyExpression
+        {
+            get => _bodyExpression;
+
+            set
+            {
+                if (value < 0)
+                {
+                    value = 0;
+                }
+                _bodyExpression = value;
+            }
+        }
+
         public string NpcName { get => _npcName; set => _npcName = value; }
         public string Dialogue { get => _dialogue; set => _dialogue = value; }
         public string DialogueAudio { get => _dialogueAudio; set => _dialogueAudio = value; }

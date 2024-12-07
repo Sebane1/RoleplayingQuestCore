@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.IO.Compression;
 using System.Numerics;
 
 namespace RoleplayingQuestCore
@@ -10,6 +11,8 @@ namespace RoleplayingQuestCore
         private Dictionary<string, RoleplayingQuest> _questChains = new Dictionary<string, RoleplayingQuest>();
         private Dictionary<string, string> _completedQuestChains = new Dictionary<string, string>();
         private Dictionary<string, int> _questProgression = new Dictionary<string, int>();
+        private string _questInstallFolder;
+
         public event EventHandler<QuestDisplayObject> OnQuestTextTriggered;
         private float _minimumDistance = 3;
         public event EventHandler OnQuestStarted;
@@ -17,39 +20,71 @@ namespace RoleplayingQuestCore
         public event EventHandler<QuestObjective> OnObjectiveCompleted;
         public event EventHandler<RoleplayingQuest> OnQuestAcceptancePopup;
 
-        public RoleplayingQuestManager(Dictionary<string, RoleplayingQuest> questChains, Dictionary<string, int> questProgression)
+        public RoleplayingQuestManager(Dictionary<string, RoleplayingQuest> questChains, Dictionary<string, int> questProgression, string questInstallFolder)
         {
             _questChains = questChains;
             _questProgression = questProgression;
+            _questInstallFolder = questInstallFolder;
         }
 
         public float MinimumDistance { get => _minimumDistance; set => _minimumDistance = value; }
         public Dictionary<string, RoleplayingQuest> QuestChains { get => _questChains; set => _questChains = value; }
         public Dictionary<string, string> CompletedQuestChains { get => _completedQuestChains; set => _completedQuestChains = value; }
         public Dictionary<string, int> QuestProgression { get => _questProgression; set => _questProgression = value; }
+        public void ScanDirectory()
+        {
+            if (!string.IsNullOrEmpty(_questInstallFolder))
+            {
+                foreach (var directory in Directory.EnumerateDirectories(_questInstallFolder))
+                {
+                    string path = Path.Combine(directory, "main.quest");
+                    if (File.Exists(path))
+                    {
+                        AddQuest(path, false);
+                    }
+                }
+            }
+        }
 
-        public Dictionary<RoleplayingQuest, Tuple<int,QuestObjective>> GetActiveQuestChainObjectives(int territoryId)
+        public void OpenQuestPack(string path)
+        {
+            ZipFile.ExtractToDirectory(path, Path.Combine(_questInstallFolder, Path.GetFileNameWithoutExtension(path)));
+        }
+
+        public void ExportQuestPack(string path)
+        {
+            string zipPath = path + ".qmp";
+            if (File.Exists(zipPath))
+            {
+                File.Delete(zipPath);
+            }
+            ZipFile.CreateFromDirectory(path, zipPath);
+        }
+        public Dictionary<RoleplayingQuest, Tuple<int, QuestObjective>> GetActiveQuestChainObjectives(int territoryId)
         {
             Dictionary<RoleplayingQuest, Tuple<int, QuestObjective>> list = new Dictionary<RoleplayingQuest, Tuple<int, QuestObjective>>();
             for (int i = 0; i < _questChains.Count; i++)
             {
                 var value = _questChains.ElementAt(i);
-                if (_questProgression.ContainsKey(value.Key))
+                if (!_completedQuestChains.ContainsKey(value.Key))
                 {
-                    var value2 = _questProgression[value.Key];
-                    if (value2 < value.Value.QuestObjectives.Count)
+                    if (_questProgression.ContainsKey(value.Key))
                     {
-                        var objective = value.Value.QuestObjectives[value2];
-                        if (objective.TerritoryId == territoryId)
+                        var value2 = _questProgression[value.Key];
+                        if (value2 < value.Value.QuestObjectives.Count)
                         {
-                            list[value.Value] = new Tuple<int, QuestObjective>(value2, objective);
+                            var objective = value.Value.QuestObjectives[value2];
+                            if (objective.TerritoryId == territoryId)
+                            {
+                                list[value.Value] = new Tuple<int, QuestObjective>(value2, objective);
+                            }
                         }
                     }
-                }
-                else
-                {
-                    _questProgression[value.Key] = 0;
-                    list[value.Value] = new Tuple<int, QuestObjective>(0,(value.Value.QuestObjectives[_questProgression[value.Key]]));
+                    else
+                    {
+                        _questProgression[value.Key] = 0;
+                        list[value.Value] = new Tuple<int, QuestObjective>(0, (value.Value.QuestObjectives[_questProgression[value.Key]]));
+                    }
                 }
             }
             return list;
@@ -59,12 +94,23 @@ namespace RoleplayingQuestCore
             _mainPlayer = gameObject;
         }
 
-        public void AddQuest(string questPath)
+        public void AddQuest(string questPath, bool resetsProgress = true)
         {
             var questChain = JsonConvert.DeserializeObject<RoleplayingQuest>(File.ReadAllText(questPath));
             questChain.FoundPath = Path.GetDirectoryName(questPath);
             _questChains[questChain.QuestId] = questChain;
-            _questProgression[questChain.QuestId] = 0;
+            if (resetsProgress)
+            {
+                _questProgression[questChain.QuestId] = 0;
+                if (_completedQuestChains.ContainsKey(questChain.QuestId))
+                {
+                    _completedQuestChains.Remove(questChain.QuestId);
+                }
+            }
+            else if (!_questProgression.ContainsKey(questChain.QuestId))
+            {
+                _questProgression[questChain.QuestId] = 0;
+            }
         }
 
         public async void ReplaceQuest(RoleplayingQuest quest)
@@ -139,8 +185,8 @@ namespace RoleplayingQuestCore
                                             bool objectivesCompleted = _questProgression[item.QuestId] >= item.QuestObjectives.Count;
                                             if (objectivesCompleted)
                                             {
-                                                _questChains.Remove(knownQuestItem.QuestId);
-                                                _questProgression.Remove(knownQuestItem.QuestId);
+                                                ////_questChains.Remove(knownQuestItem.QuestId);
+                                                ////_questProgression.Remove(knownQuestItem.QuestId);
                                                 _completedQuestChains[knownQuestItem.QuestId] = knownQuestItem.SubQuestId;
                                                 OnQuestCompleted?.Invoke(this, EventArgs.Empty);
                                             }
