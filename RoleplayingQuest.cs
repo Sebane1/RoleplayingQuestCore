@@ -41,6 +41,7 @@ namespace RoleplayingQuestCore
         public QuestRewardType TypeOfReward1 { get => _typeOfReward; set => _typeOfReward = value; }
         public string QuestThumbnailPath { get => _questThumbnailPath; set => _questThumbnailPath = value; }
         public string FoundPath { get => _foundPath; set => _foundPath = value; }
+        public Dictionary<int, NpcInformation> NpcCustomization { get => _npcCustomization; set => _npcCustomization = value; }
 
         public void CopyAuthorData(RoleplayingQuest currentQuest)
         {
@@ -48,6 +49,7 @@ namespace RoleplayingQuestCore
             _questName = currentQuest.QuestName;
             _questDescription = currentQuest.QuestDescription;
             _questId = currentQuest.QuestId;
+            _npcCustomization = currentQuest.NpcCustomization;
             SubQuestId = Guid.NewGuid().ToString();
         }
 
