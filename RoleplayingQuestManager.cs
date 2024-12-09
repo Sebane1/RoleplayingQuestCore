@@ -48,7 +48,7 @@ namespace RoleplayingQuestCore
 
         public void OpenQuestPack(string path)
         {
-            ZipFile.ExtractToDirectory(path, Path.Combine(_questInstallFolder, Path.GetFileNameWithoutExtension(path)));
+            ZipFile.ExtractToDirectory(path, Path.Combine(_questInstallFolder, Path.GetFileNameWithoutExtension(path)), true);
         }
 
         public void ExportQuestPack(string path)
