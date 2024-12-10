@@ -95,16 +95,33 @@ namespace RoleplayingQuestCore
         {
             _mainPlayer = gameObject;
         }
-        public void SwapMCDF(RoleplayingQuest roleplayingQuest, string name, string mcdf)
+        public bool SwapMCDF(RoleplayingQuest roleplayingQuest, string name, string mcdf)
         {
+            bool appearanceDataWasReplaced = false;
+            bool nameMatchFound = false;
             for (int i = 0; i < roleplayingQuest.NpcCustomization.Count; i++)
             {
                 if (roleplayingQuest.NpcCustomization[i].NpcName == name)
                 {
-                    roleplayingQuest.NpcCustomization[i].AppearanceData = mcdf;
+                    nameMatchFound = true;
+                    if (roleplayingQuest.NpcCustomization[i].AppearanceData != mcdf)
+                    {
+                        roleplayingQuest.NpcCustomization[i].AppearanceData = mcdf;
+                        appearanceDataWasReplaced = true;
+                    }
                     break;
                 }
             }
+            if (!nameMatchFound)
+            {
+                roleplayingQuest.NpcCustomization[roleplayingQuest.NpcCustomization.Count] = new NpcInformation()
+                {
+                    NpcName = name,
+                    AppearanceData = mcdf
+                };
+                appearanceDataWasReplaced = true;
+            }
+            return appearanceDataWasReplaced;
         }
         public void AddQuest(string questPath, bool resetsProgress = true)
         {
