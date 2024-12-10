@@ -8,6 +8,7 @@ namespace RoleplayingQuestCore
         string _dialogue = "Text goes here.";
         string _dialogueAudio = "none.mp3";
         string _dialogueBackground = "none.jpg";
+        string _appearanceSwap = "none.mcdf";
         int _dialogueBoxStyle = 0;
 
         DialogueEndBehaviourType dialogueEndBehaviour = DialogueEndBehaviourType.None;
@@ -68,6 +69,7 @@ namespace RoleplayingQuestCore
 
         public DialogueBackgroundType TypeOfDialogueBackground { get => _dialogueBackgroundType; set => _dialogueBackgroundType = value; }
         public int DialogueBoxStyle { get => _dialogueBoxStyle; set => _dialogueBoxStyle = value; }
+        public string AppearanceSwap { get => _appearanceSwap; set => _appearanceSwap = value; }
 
         public enum DialogueEndBehaviourType
         {

@@ -31,6 +31,8 @@ namespace RoleplayingQuestCore
         public Dictionary<string, RoleplayingQuest> QuestChains { get => _questChains; set => _questChains = value; }
         public Dictionary<string, string> CompletedQuestChains { get => _completedQuestChains; set => _completedQuestChains = value; }
         public Dictionary<string, int> QuestProgression { get => _questProgression; set => _questProgression = value; }
+        public IQuestGameObject MainPlayer { get => _mainPlayer; set => _mainPlayer = value; }
+
         public void ScanDirectory()
         {
             if (!string.IsNullOrEmpty(_questInstallFolder))
@@ -93,7 +95,17 @@ namespace RoleplayingQuestCore
         {
             _mainPlayer = gameObject;
         }
-
+        public void SwapMCDF(RoleplayingQuest roleplayingQuest, string name, string mcdf)
+        {
+            for (int i = 0; i < roleplayingQuest.NpcCustomization.Count; i++)
+            {
+                if (roleplayingQuest.NpcCustomization[i].NpcName == name)
+                {
+                    roleplayingQuest.NpcCustomization[i].AppearanceData = mcdf;
+                    break;
+                }
+            }
+        }
         public void AddQuest(string questPath, bool resetsProgress = true)
         {
             var questChain = JsonConvert.DeserializeObject<RoleplayingQuest>(File.ReadAllText(questPath));

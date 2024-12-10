@@ -1,8 +1,10 @@
+using AQuestReborn;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +20,10 @@ namespace RoleplayingQuestCore
         {
             if (_currentQuest != null)
             {
+                foreach (var objective in _currentQuest.QuestObjectives)
+                {
+                    GenerateObjectiveNPCPositions(objective);
+                }
                 Directory.CreateDirectory(savePath);
                 File.WriteAllText(Path.Combine(savePath, "main.quest"), JsonConvert.SerializeObject(_currentQuest));
             }
@@ -29,6 +35,39 @@ namespace RoleplayingQuestCore
         public void EditQuest(string openPath)
         {
             _currentQuest = JsonConvert.DeserializeObject<RoleplayingQuest>(File.ReadAllText(openPath));
+        }
+        public void GenerateObjectiveNPCPositions(QuestObjective questObjective)
+        {
+            var npcsInDialogue = questObjective.EnumerateCharactersAtObjective();
+            foreach (var npc in npcsInDialogue)
+            {
+                if (!questObjective.NpcStartingPositions.ContainsKey(npc))
+                {
+                    var newTransform = new Transform() { Name = npc };
+                    SetStartingTransformData(questObjective, newTransform);
+                    questObjective.NpcStartingPositions[npc] = newTransform;
+                }
+            }
+            for (int i = questObjective.NpcStartingPositions.Count - 1; i > -1; i--)
+            {
+                var transform = questObjective.NpcStartingPositions.ElementAt(i);
+                if (!npcsInDialogue.Contains(transform.Key))
+                {
+                    questObjective.NpcStartingPositions.Remove(transform.Key);
+                }
+            }
+        }
+
+        public void SetStartingTransformData(QuestObjective questObjective, Transform item)
+        {
+            item.Position = questObjective.Coordinates;
+            item.EulerRotation = questObjective.Rotation;
+        }
+
+        public void SetStartingTransformDataToPlayer(IQuestGameObject questGameObject, Transform item)
+        {
+            item.Position = questGameObject.Position;
+            item.EulerRotation = questGameObject.Rotation;
         }
 
         public void AddQuestObjective(QuestObjective questObjective)

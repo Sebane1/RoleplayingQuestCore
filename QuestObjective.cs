@@ -6,6 +6,7 @@ namespace RoleplayingQuestCore
         int territoryId = 0;
         string _objective = "";
         Vector3 _coordinates = new Vector3();
+        Vector3 _rotation = new Vector3();
         QuestPointType typeOfQuestPoint = QuestPointType.NPC;
         ObjectiveStatusType _objectiveStatus = ObjectiveStatusType.Complete;
         ObjectiveTriggerType _typeOfObjectiveTrigger = ObjectiveTriggerType.NormalInteraction;
@@ -22,6 +23,7 @@ namespace RoleplayingQuestCore
         public ObjectiveTriggerType TypeOfObjectiveTrigger { get => _typeOfObjectiveTrigger; set => _typeOfObjectiveTrigger = value; }
         public string TriggerText { get => triggerText; set => triggerText = value; }
         public Dictionary<string, Transform> NpcStartingPositions { get => _npcStartingPositions; set => _npcStartingPositions = value; }
+        public Vector3 Rotation { get => _rotation; set => _rotation = value; }
 
         public List<string> EnumerateCharactersAtObjective()
         {
