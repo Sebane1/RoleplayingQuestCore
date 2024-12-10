@@ -17,6 +17,7 @@ namespace RoleplayingQuestCore
         int _dialogueNumberToSkipTo = 0;
 
         List<BranchingChoice> _branchingChoices = new List<BranchingChoice>();
+        private string _npcAlias = "";
 
         public int FaceExpression
         {
@@ -45,7 +46,7 @@ namespace RoleplayingQuestCore
                 _bodyExpression = value;
             }
         }
-
+        public string NpcAlias { get => _npcAlias; set => _npcAlias = value; }
         public string NpcName { get => _npcName; set => _npcName = value; }
         public string Dialogue { get => _dialogue; set => _dialogue = value; }
         public string DialogueAudio { get => _dialogueAudio; set => _dialogueAudio = value; }
