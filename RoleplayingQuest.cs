@@ -43,13 +43,14 @@ namespace RoleplayingQuestCore
         public string FoundPath { get => _foundPath; set => _foundPath = value; }
         public Dictionary<int, NpcInformation> NpcCustomization { get => _npcCustomization; set => _npcCustomization = value; }
 
-        public void CopyAuthorData(RoleplayingQuest currentQuest)
+        public void ConfigureSubQuest(RoleplayingQuest currentQuest)
         {
             _questAuthor = currentQuest.QuestAuthor;
             _questName = currentQuest.QuestName;
             _questDescription = currentQuest.QuestDescription;
             _questId = currentQuest.QuestId;
             _npcCustomization = currentQuest.NpcCustomization;
+            _isSubQuest = true;
             SubQuestId = Guid.NewGuid().ToString();
         }
 

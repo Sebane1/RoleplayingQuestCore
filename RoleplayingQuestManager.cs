@@ -48,7 +48,11 @@ namespace RoleplayingQuestCore
                 }
             }
         }
-
+        public void RecoverDeletedQuest(RoleplayingQuest quest, string savePath)
+        {
+            Directory.CreateDirectory(savePath);
+            File.WriteAllText(Path.Combine(savePath, "main.quest"), JsonConvert.SerializeObject(quest));
+        }
         public void OpenQuestPack(string path)
         {
             if (!string.IsNullOrEmpty(path))
@@ -66,6 +70,7 @@ namespace RoleplayingQuestCore
             }
             ZipFile.CreateFromDirectory(path, zipPath);
         }
+
         public Dictionary<RoleplayingQuest, Tuple<int, QuestObjective>> GetActiveQuestChainObjectives(int territoryId)
         {
             Dictionary<RoleplayingQuest, Tuple<int, QuestObjective>> list = new Dictionary<RoleplayingQuest, Tuple<int, QuestObjective>>();

@@ -28,6 +28,22 @@ namespace RoleplayingQuestCore
                 File.WriteAllText(Path.Combine(savePath, "main.quest"), JsonConvert.SerializeObject(_currentQuest));
             }
         }
+
+        public void SaveQuestline(RoleplayingQuest roleplayingQuest, string savePath)
+        {
+            if (roleplayingQuest != null)
+            {
+                foreach (var objective in _currentQuest.QuestObjectives)
+                {
+                    GenerateObjectiveNPCPositions(objective);
+                }
+                File.WriteAllText(Path.Combine(savePath), JsonConvert.SerializeObject(roleplayingQuest));
+            }
+        }
+        public RoleplayingQuest ImportQuestline(string questPath)
+        {
+           return JsonConvert.DeserializeObject<RoleplayingQuest>(File.ReadAllText(questPath));
+        }
         public void EditQuest(RoleplayingQuest currentQuest)
         {
             _currentQuest = currentQuest;
