@@ -16,7 +16,7 @@ namespace RoleplayingQuestCore
         public event EventHandler<QuestDisplayObject> OnQuestTextTriggered;
         private float _minimumDistance = 3;
         public event EventHandler OnQuestStarted;
-        public event EventHandler OnQuestCompleted;
+        public event EventHandler<RoleplayingQuest> OnQuestCompleted;
         public event EventHandler<QuestObjective> OnObjectiveCompleted;
         public event EventHandler<RoleplayingQuest> OnQuestAcceptancePopup;
 
@@ -32,7 +32,18 @@ namespace RoleplayingQuestCore
         public Dictionary<string, string> CompletedQuestChains { get => _completedQuestChains; set => _completedQuestChains = value; }
         public Dictionary<string, int> QuestProgression { get => _questProgression; set => _questProgression = value; }
         public IQuestGameObject MainPlayer { get => _mainPlayer; set => _mainPlayer = value; }
-        public string QuestInstallFolder { get => _questInstallFolder; set => _questInstallFolder = value; }
+        public string QuestInstallFolder
+        {
+            get
+            {
+                if (_questInstallFolder.Contains("Program Files"))
+                {
+                    _questInstallFolder = "";
+                }
+                return _questInstallFolder;
+            }
+            set => _questInstallFolder = value;
+        }
 
         public void ScanDirectory()
         {
@@ -104,6 +115,7 @@ namespace RoleplayingQuestCore
         {
             _mainPlayer = gameObject;
         }
+
         public bool SwapMCDF(RoleplayingQuest roleplayingQuest, string name, string mcdf)
         {
             bool appearanceDataWasReplaced = false;
@@ -230,7 +242,7 @@ namespace RoleplayingQuestCore
                                                 ////_questChains.Remove(knownQuestItem.QuestId);
                                                 ////_questProgression.Remove(knownQuestItem.QuestId);
                                                 _completedQuestChains[knownQuestItem.QuestId] = knownQuestItem.SubQuestId;
-                                                OnQuestCompleted?.Invoke(this, EventArgs.Empty);
+                                                OnQuestCompleted?.Invoke(this, item);
                                             }
                                             if (!firstObjective && !objectivesCompleted)
                                             {
