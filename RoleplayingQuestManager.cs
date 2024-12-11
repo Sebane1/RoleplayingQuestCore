@@ -32,6 +32,7 @@ namespace RoleplayingQuestCore
         public Dictionary<string, string> CompletedQuestChains { get => _completedQuestChains; set => _completedQuestChains = value; }
         public Dictionary<string, int> QuestProgression { get => _questProgression; set => _questProgression = value; }
         public IQuestGameObject MainPlayer { get => _mainPlayer; set => _mainPlayer = value; }
+        public string QuestInstallFolder { get => _questInstallFolder; set => _questInstallFolder = value; }
 
         public void ScanDirectory()
         {
@@ -50,7 +51,10 @@ namespace RoleplayingQuestCore
 
         public void OpenQuestPack(string path)
         {
-            ZipFile.ExtractToDirectory(path, Path.Combine(_questInstallFolder, Path.GetFileNameWithoutExtension(path)), true);
+            if (!string.IsNullOrEmpty(path))
+            {
+                ZipFile.ExtractToDirectory(path, Path.Combine(_questInstallFolder, Path.GetFileNameWithoutExtension(path)), true);
+            }
         }
 
         public void ExportQuestPack(string path)
@@ -127,7 +131,10 @@ namespace RoleplayingQuestCore
         {
             var questChain = JsonConvert.DeserializeObject<RoleplayingQuest>(File.ReadAllText(questPath));
             questChain.FoundPath = Path.GetDirectoryName(questPath);
-            _questChains[questChain.QuestId] = questChain;
+            if (!_questChains.ContainsKey(questChain.QuestId) || resetsProgress)
+            {
+                _questChains[questChain.QuestId] = questChain;
+            }
             if (resetsProgress)
             {
                 _questProgression[questChain.QuestId] = 0;
@@ -144,6 +151,7 @@ namespace RoleplayingQuestCore
 
         public async void ReplaceQuest(RoleplayingQuest quest)
         {
+            quest.NpcCustomizations = _questChains[quest.QuestId].NpcCustomization;
             _questChains[quest.QuestId] = quest;
             _questProgression[quest.QuestId] = 0;
         }
