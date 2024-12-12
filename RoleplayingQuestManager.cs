@@ -11,7 +11,7 @@ namespace RoleplayingQuestCore
         private Dictionary<string, RoleplayingQuest> _questChains = new Dictionary<string, RoleplayingQuest>();
         private Dictionary<string, string> _completedQuestChains = new Dictionary<string, string>();
         private Dictionary<string, int> _questProgression = new Dictionary<string, int>();
-        private string _questInstallFolder;
+        private string _questInstallFolder = "";
 
         public event EventHandler<QuestDisplayObject> OnQuestTextTriggered;
         private float _minimumDistance = 3;
