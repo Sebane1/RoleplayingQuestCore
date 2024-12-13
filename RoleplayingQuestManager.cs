@@ -236,6 +236,15 @@ namespace RoleplayingQuestCore
                                             conditionsToProceedWereMet =
                                             objective.TriggerText.ToLower().Replace(" ", "").Contains(triggerPhrase.ToLower().Replace(" ", ""));
                                             break;
+                                        case QuestObjective.ObjectiveTriggerType.SearchArea:
+                                            
+                                            break;
+                                        case QuestObjective.ObjectiveTriggerType.KillEnemy:
+
+                                            break;
+                                        case QuestObjective.ObjectiveTriggerType.CompleteSubObjectives:
+                                            conditionsToProceedWereMet = objective.SubObjectivesComplete();
+                                            break;
                                     }
                                     if (conditionsToProceedWereMet)
                                     {
@@ -250,7 +259,7 @@ namespace RoleplayingQuestCore
                                                 {
                                                     OnQuestStarted?.Invoke(this, EventArgs.Empty);
                                                 }
-                                                knownObjective.ObjectiveCompleted = true;
+                                                knownObjective.TriggerObjectiveCompletion();
                                                 if (knownObjective.IsAPrimaryObjective)
                                                 {
                                                     _questProgression[knownQuestItem.QuestId]++;

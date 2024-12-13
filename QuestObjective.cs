@@ -10,7 +10,6 @@ namespace RoleplayingQuestCore
         QuestPointType typeOfQuestPoint = QuestPointType.NPC;
         ObjectiveStatusType _objectiveStatus = ObjectiveStatusType.Complete;
         ObjectiveTriggerType _typeOfObjectiveTrigger = ObjectiveTriggerType.NormalInteraction;
-        ObjectiveTaskType _typeOfObjectiveTaskType = ObjectiveTaskType.PeacefulInteraction;
         Dictionary<string, Transform> _npcStartingPositions = new Dictionary<string, Transform>();
         List<QuestText> _questText = new List<QuestText>();
         List<QuestObjective> _subObjectives = new List<QuestObjective>();
@@ -29,7 +28,7 @@ namespace RoleplayingQuestCore
         public Dictionary<string, Transform> NpcStartingPositions { get => _npcStartingPositions; set => _npcStartingPositions = value; }
         public Vector3 Rotation { get => _rotation; set => _rotation = value; }
         public List<QuestObjective> SubObjectives { get => _subObjectives; set => _subObjectives = value; }
-        public bool ObjectiveCompleted { get => _objectiveCompleted; set => _objectiveCompleted = value; }
+        public bool ObjectiveCompleted { get => _objectiveCompleted; }
         public bool IsAPrimaryObjective { get => _isAPrimaryObjective; set => _isAPrimaryObjective = value; }
 
         public List<string> EnumerateCharactersAtObjective()
@@ -95,17 +94,18 @@ namespace RoleplayingQuestCore
         {
             NormalInteraction = 0,
             DoEmote = 1,
-            SayPhrase = 2
-        }
-        public enum ObjectiveTaskType
-        {
-            PeacefulInteraction = 0,
-            SearchArea = 1,
-            KillEnemy = 2
+            SayPhrase = 2,
+            SearchArea = 3,
+            KillEnemy = 4
         }
         public override string ToString()
         {
             return _objective;
+        }
+
+        internal void TriggerObjectiveCompletion()
+        {
+            _objectiveCompleted = true;
         }
     }
 }
