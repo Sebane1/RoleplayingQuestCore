@@ -18,7 +18,7 @@ namespace RoleplayingQuestCore
         private bool _isAPrimaryObjective = true;
 
         private bool _dontShowOnMap = false;
-        private float _minimum3dIndicatorDistance = 48;
+        private float _maximum3dIndicatorDistance = 48;
 
 
 
@@ -35,7 +35,7 @@ namespace RoleplayingQuestCore
         public List<QuestObjective> SubObjectives { get => _subObjectives; set => _subObjectives = value; }
         public bool ObjectiveCompleted { get => _objectiveCompleted; }
         public bool IsAPrimaryObjective { get => _isAPrimaryObjective; set => _isAPrimaryObjective = value; }
-        public float Minimum3dIndicatorDistance { get => _minimum3dIndicatorDistance; set => _minimum3dIndicatorDistance = value; }
+        public float Maximum3dIndicatorDistance { get => _maximum3dIndicatorDistance; set => _maximum3dIndicatorDistance = value; }
         public bool DontShowOnMap { get => _dontShowOnMap; set => _dontShowOnMap = value; }
 
         public List<string> EnumerateCharactersAtObjective()
