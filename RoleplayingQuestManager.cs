@@ -245,7 +245,7 @@ namespace RoleplayingQuestCore
                                             break;
                                         case QuestObjective.ObjectiveTriggerType.KillEnemy:
                                             conditionsToProceedWereMet =
-                                            objective.TriggerText.ToLower().Replace(" ", "").Contains(triggerPhrase.ToLower().Replace(" ", ""))
+                                           triggerPhrase.ToLower().Replace(" ", "").Contains(objective.TriggerText.ToLower().Replace(" ", ""))
                                             && objective.SubObjectivesComplete();
                                             break;
                                     }
