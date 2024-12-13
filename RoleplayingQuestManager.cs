@@ -106,7 +106,10 @@ namespace RoleplayingQuestCore
                         {
                             if (objective.TerritoryId == territoryId)
                             {
-                                list.Add(new Tuple<int, QuestObjective, RoleplayingQuest>(progressIndex, objective, value.Value));
+                                if (objective.SubObjectivesComplete())
+                                {
+                                    list.Add(new Tuple<int, QuestObjective, RoleplayingQuest>(progressIndex, objective, value.Value));
+                                }
                             }
                         }
                     }
@@ -208,7 +211,7 @@ namespace RoleplayingQuestCore
             }
             return list;
         }
-        public void ProgressTriggerQuestObjective(QuestObjective.ObjectiveTriggerType triggerType = QuestObjective.ObjectiveTriggerType.NormalInteraction, string triggerPhrase = "")
+        public void AttemptProgressingQuestObjective(QuestObjective.ObjectiveTriggerType triggerType = QuestObjective.ObjectiveTriggerType.NormalInteraction, string triggerPhrase = "", bool ignoreDistance = false)
         {
             foreach (var item in _questChains.Values)
             {
@@ -219,31 +222,31 @@ namespace RoleplayingQuestCore
                     {
                         foreach (var objective in item.QuestObjectives[value].GetAllSubObjectives())
                         {
-                            if (objective.TerritoryId == _mainPlayer.TerritoryId)
+                            if (objective.TerritoryId == _mainPlayer.TerritoryId && triggerType == objective.TypeOfObjectiveTrigger)
                             {
-                                if (Vector3.Distance(objective.Coordinates, _mainPlayer.Position) < _minimumDistance)
+                                if (Vector3.Distance(objective.Coordinates, _mainPlayer.Position) < _minimumDistance || ignoreDistance)
                                 {
                                     bool conditionsToProceedWereMet = false;
                                     switch (objective.TypeOfObjectiveTrigger)
                                     {
                                         case QuestObjective.ObjectiveTriggerType.NormalInteraction:
-                                            conditionsToProceedWereMet = true;
+                                            conditionsToProceedWereMet = objective.SubObjectivesComplete();
                                             break;
                                         case QuestObjective.ObjectiveTriggerType.DoEmote:
-                                            conditionsToProceedWereMet = objective.TriggerText == triggerPhrase;
+                                            conditionsToProceedWereMet = objective.TriggerText == triggerPhrase && objective.SubObjectivesComplete();
                                             break;
                                         case QuestObjective.ObjectiveTriggerType.SayPhrase:
                                             conditionsToProceedWereMet =
-                                            objective.TriggerText.ToLower().Replace(" ", "").Contains(triggerPhrase.ToLower().Replace(" ", ""));
+                                            objective.TriggerText.ToLower().Replace(" ", "").Contains(triggerPhrase.ToLower().Replace(" ", ""))
+                                            && objective.SubObjectivesComplete();
                                             break;
                                         case QuestObjective.ObjectiveTriggerType.SearchArea:
-                                            
+                                            conditionsToProceedWereMet = objective.SubObjectivesComplete();
                                             break;
                                         case QuestObjective.ObjectiveTriggerType.KillEnemy:
-
-                                            break;
-                                        case QuestObjective.ObjectiveTriggerType.CompleteSubObjectives:
-                                            conditionsToProceedWereMet = objective.SubObjectivesComplete();
+                                            conditionsToProceedWereMet =
+                                            objective.TriggerText.ToLower().Replace(" ", "").Contains(triggerPhrase.ToLower().Replace(" ", ""))
+                                            && objective.SubObjectivesComplete();
                                             break;
                                     }
                                     if (conditionsToProceedWereMet)

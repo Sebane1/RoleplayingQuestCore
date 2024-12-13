@@ -13,6 +13,7 @@ namespace RoleplayingQuestCore
         Dictionary<string, Transform> _npcStartingPositions = new Dictionary<string, Transform>();
         List<QuestText> _questText = new List<QuestText>();
         List<QuestObjective> _subObjectives = new List<QuestObjective>();
+        private int taskRepetitions = 0;
         string triggerText = "";
         bool _objectiveCompleted = false;
         private bool _isAPrimaryObjective = true;
@@ -96,7 +97,7 @@ namespace RoleplayingQuestCore
             DoEmote = 1,
             SayPhrase = 2,
             SearchArea = 3,
-            KillEnemy = 4
+            KillEnemy = 4,
         }
         public override string ToString()
         {
