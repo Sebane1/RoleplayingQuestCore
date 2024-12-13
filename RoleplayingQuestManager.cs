@@ -82,35 +82,39 @@ namespace RoleplayingQuestCore
             ZipFile.CreateFromDirectory(path, zipPath);
         }
 
-        public Dictionary<RoleplayingQuest, Tuple<int, QuestObjective>> GetActiveQuestChainObjectives(int territoryId)
+        public List<Tuple<int, QuestObjective, RoleplayingQuest>> GetActiveQuestChainObjectivesInZone(int territoryId)
         {
-            Dictionary<RoleplayingQuest, Tuple<int, QuestObjective>> list = new Dictionary<RoleplayingQuest, Tuple<int, QuestObjective>>();
+            List<Tuple<int, QuestObjective, RoleplayingQuest>> list = new List<Tuple<int, QuestObjective, RoleplayingQuest>>();
             for (int i = 0; i < _questChains.Count; i++)
             {
                 var value = _questChains.ElementAt(i);
                 if (!_completedQuestChains.ContainsKey(value.Key))
                 {
+                    var progressIndex = 0;
                     if (_questProgression.ContainsKey(value.Key))
                     {
-                        var value2 = _questProgression[value.Key];
-                        if (value2 < value.Value.QuestObjectives.Count)
-                        {
-                            var objective = value.Value.QuestObjectives[value2];
-                            if (objective.TerritoryId == territoryId)
-                            {
-                                list[value.Value] = new Tuple<int, QuestObjective>(value2, objective);
-                            }
-                        }
+                        progressIndex = _questProgression[value.Key];
                     }
                     else
                     {
-                        _questProgression[value.Key] = 0;
-                        list[value.Value] = new Tuple<int, QuestObjective>(0, (value.Value.QuestObjectives[_questProgression[value.Key]]));
+                        _questProgression[value.Key] = progressIndex;
+                    }
+                    if (progressIndex < value.Value.QuestObjectives.Count)
+                    {
+                        var questObjectives = value.Value.QuestObjectives[progressIndex].GetAllSubObjectives();
+                        foreach (var objective in questObjectives)
+                        {
+                            if (objective.TerritoryId == territoryId)
+                            {
+                                list.Add(new Tuple<int, QuestObjective, RoleplayingQuest>(progressIndex, objective, value.Value));
+                            }
+                        }
                     }
                 }
             }
             return list;
         }
+
         public void LoadMainQuestGameObject(IQuestGameObject gameObject)
         {
             _mainPlayer = gameObject;
@@ -188,7 +192,13 @@ namespace RoleplayingQuestCore
                     var questProgression = _questProgression[item.QuestId];
                     if (_questProgression[item.QuestId] > 0)
                     {
-                        list.Add(item.QuestObjectives[questProgression]);
+                        if (item.QuestObjectives.Count > 0)
+                        {
+                            if (questProgression < item.QuestObjectives.Count)
+                            {
+                                list.Add(item.QuestObjectives[questProgression]);
+                            }
+                        }
                     }
                 }
             }
