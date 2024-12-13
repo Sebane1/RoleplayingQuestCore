@@ -16,6 +16,7 @@ namespace RoleplayingQuestCore
         List<QuestObjective> _subObjectives = new List<QuestObjective>();
         string triggerText = "";
         bool _objectiveCompleted = false;
+        private bool _isAPrimaryObjective = true;
 
         public int TerritoryId { get => territoryId; set => territoryId = value; }
         public string Objective { get => _objective; set => _objective = value; }
@@ -29,6 +30,7 @@ namespace RoleplayingQuestCore
         public Vector3 Rotation { get => _rotation; set => _rotation = value; }
         public List<QuestObjective> SubObjectives { get => _subObjectives; set => _subObjectives = value; }
         public bool ObjectiveCompleted { get => _objectiveCompleted; set => _objectiveCompleted = value; }
+        public bool IsAPrimaryObjective { get => _isAPrimaryObjective; set => _isAPrimaryObjective = value; }
 
         public List<string> EnumerateCharactersAtObjective()
         {
@@ -55,6 +57,7 @@ namespace RoleplayingQuestCore
                         completed = false;
                         break;
                     }
+                    completed = item.SubObjectivesComplete();
                 }
             }
             return completed;

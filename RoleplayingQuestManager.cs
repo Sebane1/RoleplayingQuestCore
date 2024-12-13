@@ -163,6 +163,10 @@ namespace RoleplayingQuestCore
                 {
                     _completedQuestChains.Remove(questChain.QuestId);
                 }
+                foreach (var objective in questChain.QuestObjectives)
+                {
+                    objective.IsAPrimaryObjective = true;
+                }
             }
             else if (!_questProgression.ContainsKey(questChain.QuestId))
             {
@@ -213,59 +217,65 @@ namespace RoleplayingQuestCore
                     var value = _questProgression[item.QuestId];
                     if (value < item.QuestObjectives.Count)
                     {
-                        var objective = item.QuestObjectives[value];
-                        if (objective.TerritoryId == _mainPlayer.TerritoryId)
+                        foreach (var objective in item.QuestObjectives[value].GetAllSubObjectives())
                         {
-                            if (Vector3.Distance(objective.Coordinates, _mainPlayer.Position) < _minimumDistance)
+                            if (objective.TerritoryId == _mainPlayer.TerritoryId)
                             {
-                                bool conditionsToProceedWereMet = false;
-                                switch (objective.TypeOfObjectiveTrigger)
+                                if (Vector3.Distance(objective.Coordinates, _mainPlayer.Position) < _minimumDistance)
                                 {
-                                    case QuestObjective.ObjectiveTriggerType.NormalInteraction:
-                                        conditionsToProceedWereMet = true;
-                                        break;
-                                    case QuestObjective.ObjectiveTriggerType.DoEmote:
-                                        conditionsToProceedWereMet = objective.TriggerText == triggerPhrase;
-                                        break;
-                                    case QuestObjective.ObjectiveTriggerType.SayPhrase:
-                                        conditionsToProceedWereMet =
-                                        objective.TriggerText.ToLower().Replace(" ", "").Contains(triggerPhrase.ToLower().Replace(" ", ""));
-                                        break;
-                                }
-                                if (conditionsToProceedWereMet)
-                                {
-                                    if (!item.HasQuestAcceptancePopup)
+                                    bool conditionsToProceedWereMet = false;
+                                    switch (objective.TypeOfObjectiveTrigger)
                                     {
-                                        OnQuestTextTriggered?.Invoke(this, new QuestDisplayObject(item, objective, delegate
+                                        case QuestObjective.ObjectiveTriggerType.NormalInteraction:
+                                            conditionsToProceedWereMet = true;
+                                            break;
+                                        case QuestObjective.ObjectiveTriggerType.DoEmote:
+                                            conditionsToProceedWereMet = objective.TriggerText == triggerPhrase;
+                                            break;
+                                        case QuestObjective.ObjectiveTriggerType.SayPhrase:
+                                            conditionsToProceedWereMet =
+                                            objective.TriggerText.ToLower().Replace(" ", "").Contains(triggerPhrase.ToLower().Replace(" ", ""));
+                                            break;
+                                    }
+                                    if (conditionsToProceedWereMet)
+                                    {
+                                        if (!item.HasQuestAcceptancePopup)
                                         {
-                                            var knownQuestItem = item;
-                                            var knownObjective = objective;
-                                            bool firstObjective = _questProgression[item.QuestId] == 0;
-                                            if (firstObjective)
+                                            OnQuestTextTriggered?.Invoke(this, new QuestDisplayObject(item, objective, delegate
                                             {
-                                                OnQuestStarted?.Invoke(this, EventArgs.Empty);
-                                            }
-                                            _questProgression[knownQuestItem.QuestId]++;
-                                            bool objectivesCompleted = _questProgression[item.QuestId] >= item.QuestObjectives.Count;
-                                            if (objectivesCompleted)
-                                            {
-                                                ////_questChains.Remove(knownQuestItem.QuestId);
-                                                ////_questProgression.Remove(knownQuestItem.QuestId);
-                                                _completedQuestChains[knownQuestItem.QuestId] = knownQuestItem.SubQuestId;
-                                                OnQuestCompleted?.Invoke(this, item);
-                                            }
-                                            if (!firstObjective && !objectivesCompleted)
-                                            {
-                                                OnObjectiveCompleted?.Invoke(this, knownObjective);
-                                            }
-                                        }, item.NpcCustomizations));
+                                                var knownQuestItem = item;
+                                                var knownObjective = objective;
+                                                bool firstObjective = _questProgression[item.QuestId] == 0;
+                                                if (firstObjective)
+                                                {
+                                                    OnQuestStarted?.Invoke(this, EventArgs.Empty);
+                                                }
+                                                knownObjective.ObjectiveCompleted = true;
+                                                if (knownObjective.IsAPrimaryObjective)
+                                                {
+                                                    _questProgression[knownQuestItem.QuestId]++;
+                                                }
+                                                bool objectivesCompleted = _questProgression[item.QuestId] >= item.QuestObjectives.Count;
+                                                if (objectivesCompleted)
+                                                {
+                                                    ////_questChains.Remove(knownQuestItem.QuestId);
+                                                    ////_questProgression.Remove(knownQuestItem.QuestId);
+                                                    _completedQuestChains[knownQuestItem.QuestId] = knownQuestItem.SubQuestId;
+                                                    OnQuestCompleted?.Invoke(this, item);
+                                                }
+                                                if (!firstObjective && !objectivesCompleted)
+                                                {
+                                                    OnObjectiveCompleted?.Invoke(this, knownObjective);
+                                                }
+                                            }, item.NpcCustomizations));
+                                        }
+                                        else
+                                        {
+                                            OnQuestAcceptancePopup?.Invoke(this, item);
+                                        }
                                     }
-                                    else
-                                    {
-                                        OnQuestAcceptancePopup?.Invoke(this, item);
-                                    }
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }
