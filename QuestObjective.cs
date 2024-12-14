@@ -4,7 +4,7 @@ namespace RoleplayingQuestCore
     public class QuestObjective
     {
         int territoryId = 0;
-        string _objective = "";
+        string _objective = "Quest Objective Here";
         Vector3 _coordinates = new Vector3();
         Vector3 _rotation = new Vector3();
         QuestPointType _typeOfQuestPoint = QuestPointType.NPC;
@@ -37,6 +37,7 @@ namespace RoleplayingQuestCore
         public bool IsAPrimaryObjective { get => _isAPrimaryObjective; set => _isAPrimaryObjective = value; }
         public float Maximum3dIndicatorDistance { get => _maximum3dIndicatorDistance; set => _maximum3dIndicatorDistance = value; }
         public bool DontShowOnMap { get => _dontShowOnMap; set => _dontShowOnMap = value; }
+        public bool Invalidate { get; set; }
 
         public List<string> EnumerateCharactersAtObjective()
         {
