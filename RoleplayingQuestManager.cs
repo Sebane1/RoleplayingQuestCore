@@ -189,21 +189,31 @@ namespace RoleplayingQuestCore
             _questChains.Remove(quest.QuestId);
             _questProgression.Remove(quest.QuestId);
         }
-        public List<QuestObjective> GetCurrentObjectives()
+        public List<Tuple<int, QuestObjective, RoleplayingQuest>> GetCurrentObjectives()
         {
-            List<QuestObjective> list = new List<QuestObjective>();
-            foreach (var item in _questChains.Values)
+            List<Tuple<int, QuestObjective, RoleplayingQuest>> list = new List<Tuple<int, QuestObjective, RoleplayingQuest>>();
+            for (int i = 0; i < _questChains.Count; i++)
             {
-                if (_questProgression.ContainsKey(item.QuestId))
+                var value = _questChains.ElementAt(i);
+                if (!_completedQuestChains.ContainsKey(value.Key))
                 {
-                    var questProgression = _questProgression[item.QuestId];
-                    if (_questProgression[item.QuestId] > 0)
+                    var progressIndex = 0;
+                    if (_questProgression.ContainsKey(value.Key))
                     {
-                        if (item.QuestObjectives.Count > 0)
+                        progressIndex = _questProgression[value.Key];
+                    }
+                    else
+                    {
+                        _questProgression[value.Key] = progressIndex;
+                    }
+                    if (progressIndex < value.Value.QuestObjectives.Count)
+                    {
+                        var questObjectives = value.Value.QuestObjectives[progressIndex].GetAllSubObjectives();
+                        foreach (var objective in questObjectives)
                         {
-                            if (questProgression < item.QuestObjectives.Count)
+                            if (objective.SubObjectivesComplete())
                             {
-                                list.Add(item.QuestObjectives[questProgression]);
+                                list.Add(new Tuple<int, QuestObjective, RoleplayingQuest>(progressIndex, objective, value.Value));
                             }
                         }
                     }

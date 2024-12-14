@@ -73,7 +73,10 @@ namespace RoleplayingQuestCore
         public List<QuestObjective> GetAllSubObjectives()
         {
             var subObjectives = new List<QuestObjective>();
-            subObjectives.Add(this);
+            if (_isAPrimaryObjective)
+            {
+                subObjectives.Add(this);
+            }
             if (_subObjectives.Count > 0)
             {
                 subObjectives.AddRange(_subObjectives);
