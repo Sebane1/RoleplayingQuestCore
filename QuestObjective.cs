@@ -17,6 +17,8 @@ namespace RoleplayingQuestCore
         bool _objectiveCompleted = false;
         private bool _isAPrimaryObjective = true;
 
+        private bool _objectiveImmediatelySatisfiesParent = false;
+
         private bool _dontShowOnMap = false;
         private float _maximum3dIndicatorDistance = 48;
 
@@ -38,6 +40,7 @@ namespace RoleplayingQuestCore
         public float Maximum3dIndicatorDistance { get => _maximum3dIndicatorDistance; set => _maximum3dIndicatorDistance = value; }
         public bool DontShowOnMap { get => _dontShowOnMap; set => _dontShowOnMap = value; }
         public bool Invalidate { get; set; }
+        public bool ObjectiveImmediatelySatisfiesParent { get => _objectiveImmediatelySatisfiesParent; set => _objectiveImmediatelySatisfiesParent = value; }
 
         public List<string> EnumerateCharactersAtObjective()
         {
@@ -54,20 +57,26 @@ namespace RoleplayingQuestCore
 
         public bool SubObjectivesComplete()
         {
-            bool completed = true;
+            int count = 0;
             if (_subObjectives.Count > 0)
             {
                 foreach (var item in _subObjectives)
                 {
-                    if (!item.ObjectiveCompleted)
+                    if (item.ObjectiveCompleted && item.SubObjectivesComplete())
                     {
-                        completed = false;
-                        break;
+                        count++;
                     }
-                    completed = item.SubObjectivesComplete();
+                    if (item.ObjectiveImmediatelySatisfiesParent && item.ObjectiveCompleted)
+                    {
+                        foreach (var subObjective in _subObjectives)
+                        {
+                            subObjective.TriggerObjectiveCompletion();
+                        }
+                        return true;
+                    }
                 }
             }
-            return completed;
+            return count == _subObjectives.Count;
         }
 
         public List<QuestObjective> GetAllSubObjectives()
