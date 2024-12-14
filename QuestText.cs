@@ -79,6 +79,7 @@ namespace RoleplayingQuestCore
             None = 0,
             DialogueSkipsToDialogueNumber = 1,
             DialogueEndsEarlyWhenHit = 2,
+            DialogueEndsEarlyWhenHitNoProgression = 3,
         }
         public enum DialogueBackgroundType
         {
