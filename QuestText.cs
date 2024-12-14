@@ -4,6 +4,7 @@ namespace RoleplayingQuestCore
     {
         int _faceExpression = 0;
         int _bodyExpression = 0;
+        bool _loopAnimation = false;
         string _npcName = "Name here.";
         string _dialogue = "Text goes here.";
         string _dialogueAudio = "none.mp3";
@@ -71,6 +72,7 @@ namespace RoleplayingQuestCore
         public DialogueBackgroundType TypeOfDialogueBackground { get => _dialogueBackgroundType; set => _dialogueBackgroundType = value; }
         public int DialogueBoxStyle { get => _dialogueBoxStyle; set => _dialogueBoxStyle = value; }
         public string AppearanceSwap { get => _appearanceSwap; set => _appearanceSwap = value; }
+        public bool LoopAnimation { get => _loopAnimation; set => _loopAnimation = value; }
 
         public enum DialogueEndBehaviourType
         {
