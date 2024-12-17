@@ -76,9 +76,10 @@ namespace RoleplayingQuestCore
 
         public bool CompletedObjectiveExists(string objectiveId)
         {
+            var trimmedObjective = objectiveId.Trim();
             foreach (var item in _completedObjectives)
             {
-                if (item.Value.Contains(objectiveId))
+                if (item.Value.Contains(trimmedObjective))
                 {
                     return true;
                 }
