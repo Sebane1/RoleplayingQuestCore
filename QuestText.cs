@@ -2,6 +2,7 @@ namespace RoleplayingQuestCore
 {
     public class QuestText
     {
+        private int objectiveNumberToSkipTo = 0;
         int _faceExpression = 0;
         int _bodyExpression = 0;
         bool _loopAnimation = false;
@@ -73,6 +74,7 @@ namespace RoleplayingQuestCore
         public int DialogueBoxStyle { get => _dialogueBoxStyle; set => _dialogueBoxStyle = value; }
         public string AppearanceSwap { get => _appearanceSwap; set => _appearanceSwap = value; }
         public bool LoopAnimation { get => _loopAnimation; set => _loopAnimation = value; }
+        public int ObjectiveNumberToSkipTo { get => objectiveNumberToSkipTo; set => objectiveNumberToSkipTo = value; }
 
         public enum DialogueEndBehaviourType
         {
@@ -80,6 +82,7 @@ namespace RoleplayingQuestCore
             DialogueSkipsToDialogueNumber = 1,
             DialogueEndsEarlyWhenHit = 2,
             DialogueEndsEarlyWhenHitNoProgression = 3,
+            DialogueEndsEarlyWhenHitAndSkipsToObjective = 4,
         }
         public enum DialogueBackgroundType
         {
