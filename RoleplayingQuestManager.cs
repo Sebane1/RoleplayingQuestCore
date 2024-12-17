@@ -9,6 +9,7 @@ namespace RoleplayingQuestCore
         private const int V = 3;
         private IQuestGameObject _mainPlayer;
         private Dictionary<string, RoleplayingQuest> _questChains = new Dictionary<string, RoleplayingQuest>();
+        private Dictionary<string, List<string>> _completedObjectives = new Dictionary<string, List<string>>();
         private Dictionary<string, string> _completedQuestChains = new Dictionary<string, string>();
         private Dictionary<string, int> _questProgression = new Dictionary<string, int>();
         private string _questInstallFolder = "";
@@ -20,10 +21,11 @@ namespace RoleplayingQuestCore
         public event EventHandler<QuestObjective> OnObjectiveCompleted;
         public event EventHandler<RoleplayingQuest> OnQuestAcceptancePopup;
 
-        public RoleplayingQuestManager(Dictionary<string, RoleplayingQuest> questChains, Dictionary<string, int> questProgression, string questInstallFolder)
+        public RoleplayingQuestManager(Dictionary<string, RoleplayingQuest> questChains, Dictionary<string, int> questProgression, Dictionary<string, List<string>> completedObjectives, string questInstallFolder)
         {
             _questChains = questChains;
             _questProgression = questProgression;
+            _completedObjectives = completedObjectives;
             _questInstallFolder = questInstallFolder;
         }
 
@@ -59,6 +61,36 @@ namespace RoleplayingQuestCore
                 }
             }
         }
+        public void AddCompletedObjective(RoleplayingQuest quest, QuestObjective questObjective)
+        {
+            if (!_completedObjectives.ContainsKey(quest.QuestId))
+            {
+                _completedObjectives[quest.QuestId] = new List<string>();
+            }
+            var completedObjectiveList = _completedObjectives[quest.QuestId];
+            if (!completedObjectiveList.Contains(questObjective.Id))
+            {
+                completedObjectiveList.Add(questObjective.Id);
+            }
+        }
+
+        public bool CompletedObjectiveExists(string objectiveId)
+        {
+            foreach (var item in _completedObjectives)
+            {
+                if (item.Value.Contains(objectiveId))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void ClearCompletedQuestObjectives(RoleplayingQuest quest)
+        {
+            _completedObjectives[quest.QuestId] = new List<string>();
+        }
+
         public void RecoverDeletedQuest(RoleplayingQuest quest, string savePath)
         {
             Directory.CreateDirectory(savePath);
@@ -153,28 +185,29 @@ namespace RoleplayingQuestCore
         }
         public void AddQuest(string questPath, bool resetsProgress = true, bool reloadQuestData = false)
         {
-            var questChain = JsonConvert.DeserializeObject<RoleplayingQuest>(File.ReadAllText(questPath));
-            questChain.FoundPath = Path.GetDirectoryName(questPath);
-            if (!_questChains.ContainsKey(questChain.QuestId) || resetsProgress || reloadQuestData)
+            var quest = JsonConvert.DeserializeObject<RoleplayingQuest>(File.ReadAllText(questPath));
+            quest.FoundPath = Path.GetDirectoryName(questPath);
+            if (!_questChains.ContainsKey(quest.QuestId) || resetsProgress || reloadQuestData)
             {
-                questChain.HasQuestAcceptancePopup = !reloadQuestData;
-                _questChains[questChain.QuestId] = questChain;
+                quest.HasQuestAcceptancePopup = !reloadQuestData;
+                _questChains[quest.QuestId] = quest;
             }
             if (resetsProgress)
             {
-                _questProgression[questChain.QuestId] = 0;
-                if (_completedQuestChains.ContainsKey(questChain.QuestId))
+                _questProgression[quest.QuestId] = 0;
+                if (_completedQuestChains.ContainsKey(quest.QuestId))
                 {
-                    _completedQuestChains.Remove(questChain.QuestId);
+                    _completedQuestChains.Remove(quest.QuestId);
                 }
-                foreach (var objective in questChain.QuestObjectives)
+                ClearCompletedQuestObjectives(quest);
+                foreach (var objective in quest.QuestObjectives)
                 {
                     objective.IsAPrimaryObjective = true;
                 }
             }
-            else if (!_questProgression.ContainsKey(questChain.QuestId))
+            else if (!_questProgression.ContainsKey(quest.QuestId))
             {
-                _questProgression[questChain.QuestId] = 0;
+                _questProgression[quest.QuestId] = 0;
             }
         }
 
@@ -282,6 +315,7 @@ namespace RoleplayingQuestCore
                                                         OnQuestStarted?.Invoke(this, EventArgs.Empty);
                                                     }
                                                     knownObjective.TriggerObjectiveCompletion();
+                                                    AddCompletedObjective(item, knownObjective);
                                                     if (knownObjective.IsAPrimaryObjective)
                                                     {
                                                         _questProgression[knownQuestItem.QuestId]++;

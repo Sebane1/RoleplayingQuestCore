@@ -11,10 +11,13 @@ namespace RoleplayingQuestCore
         string _dialogueAudio = "none.mp3";
         string _dialogueBackground = "none.jpg";
         string _appearanceSwap = "none.mcdf";
+        string _objectiveIdToComplete = "";
         int _dialogueBoxStyle = 0;
+        
 
         DialogueEndBehaviourType dialogueEndBehaviour = DialogueEndBehaviourType.None;
         DialogueBackgroundType _dialogueBackgroundType = DialogueBackgroundType.None;
+        DialogueConditionType _conditionForDialogueToOccur = DialogueConditionType.None;
 
         int _dialogueNumberToSkipTo = 0;
 
@@ -75,6 +78,8 @@ namespace RoleplayingQuestCore
         public string AppearanceSwap { get => _appearanceSwap; set => _appearanceSwap = value; }
         public bool LoopAnimation { get => _loopAnimation; set => _loopAnimation = value; }
         public int ObjectiveNumberToSkipTo { get => objectiveNumberToSkipTo; set => objectiveNumberToSkipTo = value; }
+        public DialogueConditionType ConditionForDialogueToOccur { get => _conditionForDialogueToOccur; set => _conditionForDialogueToOccur = value; }
+        public string ObjectiveIdToComplete { get => _objectiveIdToComplete; set => _objectiveIdToComplete = value; }
 
         public enum DialogueEndBehaviourType
         {
@@ -89,6 +94,11 @@ namespace RoleplayingQuestCore
             None = 0,
             Image = 1,
             Video = 2,
+        }
+        public enum DialogueConditionType
+        {
+            None = 0,
+            CompletedSpecificObjectiveId = 1,
         }
     }
 }
