@@ -3,6 +3,7 @@ namespace RoleplayingQuestCore
 {
     public class QuestObjective
     {
+        string _id = "";
         int territoryId = 0;
         int _index = 0;
         string _objective = "Quest Objective Here";
@@ -23,7 +24,10 @@ namespace RoleplayingQuestCore
         private bool _dontShowOnMap = false;
         private float _maximum3dIndicatorDistance = 48;
 
-
+        public QuestObjective()
+        {
+            _id = Guid.NewGuid().ToString();
+        }
 
         public int TerritoryId { get => territoryId; set => territoryId = value; }
         public string Objective { get => _objective; set => _objective = value; }
@@ -43,6 +47,7 @@ namespace RoleplayingQuestCore
         public bool Invalidate { get; set; }
         public bool ObjectiveImmediatelySatisfiesParent { get => _objectiveImmediatelySatisfiesParent; set => _objectiveImmediatelySatisfiesParent = value; }
         public int Index { get => _index; set => _index = value; }
+        public string Id { get => _id; set => _id = value; }
 
         public List<string> EnumerateCharactersAtObjective()
         {
