@@ -151,12 +151,13 @@ namespace RoleplayingQuestCore
             }
             return appearanceDataWasReplaced;
         }
-        public void AddQuest(string questPath, bool resetsProgress = true)
+        public void AddQuest(string questPath, bool resetsProgress = true, bool reloadQuestData = false)
         {
             var questChain = JsonConvert.DeserializeObject<RoleplayingQuest>(File.ReadAllText(questPath));
             questChain.FoundPath = Path.GetDirectoryName(questPath);
-            if (!_questChains.ContainsKey(questChain.QuestId) || resetsProgress)
+            if (!_questChains.ContainsKey(questChain.QuestId) || resetsProgress || reloadQuestData)
             {
+                questChain.HasQuestAcceptancePopup = !reloadQuestData;
                 _questChains[questChain.QuestId] = questChain;
             }
             if (resetsProgress)
@@ -221,6 +222,12 @@ namespace RoleplayingQuestCore
             }
             return list;
         }
+
+        public void SkipToObjective(RoleplayingQuest roleplayingQuest, int objectiveIndex)
+        {
+            _questProgression[roleplayingQuest.QuestId] = objectiveIndex;
+        }
+
         public void AttemptProgressingQuestObjective(QuestObjective.ObjectiveTriggerType triggerType = QuestObjective.ObjectiveTriggerType.NormalInteraction, string triggerPhrase = "", bool ignoreDistance = false)
         {
             foreach (var item in _questChains.Values)

@@ -4,6 +4,7 @@ namespace RoleplayingQuestCore
     public class QuestObjective
     {
         int territoryId = 0;
+        int _index = 0;
         string _objective = "Quest Objective Here";
         Vector3 _coordinates = new Vector3();
         Vector3 _rotation = new Vector3();
@@ -41,6 +42,7 @@ namespace RoleplayingQuestCore
         public bool DontShowOnMap { get => _dontShowOnMap; set => _dontShowOnMap = value; }
         public bool Invalidate { get; set; }
         public bool ObjectiveImmediatelySatisfiesParent { get => _objectiveImmediatelySatisfiesParent; set => _objectiveImmediatelySatisfiesParent = value; }
+        public int Index { get => _index; set => _index = value; }
 
         public List<string> EnumerateCharactersAtObjective()
         {
