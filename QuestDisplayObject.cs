@@ -7,7 +7,8 @@ namespace RoleplayingQuestCore
         Dictionary<int, NpcInformation> _npcsPresent = new Dictionary<int, NpcInformation>();
         private EventHandler _questEvents;
 
-        public QuestDisplayObject(RoleplayingQuest roleplayingQuest, QuestObjective questTextList, EventHandler questEvents, Dictionary<int, NpcInformation> npcsPresent)
+        public QuestDisplayObject(RoleplayingQuest roleplayingQuest, QuestObjective questTextList, 
+            EventHandler questEvents, Dictionary<int, NpcInformation> npcsPresent)
         {
             _questTextList = questTextList;
             _npcsPresent = npcsPresent;

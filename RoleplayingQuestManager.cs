@@ -13,9 +13,9 @@ namespace RoleplayingQuestCore
         private Dictionary<string, string> _completedQuestChains = new Dictionary<string, string>();
         private Dictionary<string, int> _questProgression = new Dictionary<string, int>();
         private string _questInstallFolder = "";
-
-        public event EventHandler<QuestDisplayObject> OnQuestTextTriggered;
+        
         private float _minimumDistance = 3;
+        public event EventHandler<QuestDisplayObject> OnQuestTextTriggered;
         public event EventHandler OnQuestStarted;
         public event EventHandler<RoleplayingQuest> OnQuestCompleted;
         public event EventHandler<QuestObjective> OnObjectiveCompleted;
