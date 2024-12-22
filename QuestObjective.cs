@@ -4,7 +4,9 @@ namespace RoleplayingQuestCore
     public class QuestObjective
     {
         string _id = "";
-        int territoryId = 0;
+        int _territoryId = 0;
+        bool _usesTerritoryDiscriminator = false;
+        string _territoryDiscriminator = "";
         int _index = 0;
         string _objective = "Quest Objective Here";
         Vector3 _coordinates = new Vector3();
@@ -29,7 +31,7 @@ namespace RoleplayingQuestCore
             _id = Guid.NewGuid().ToString();
         }
 
-        public int TerritoryId { get => territoryId; set => territoryId = value; }
+        public int TerritoryId { get => _territoryId; set => _territoryId = value; }
         public string Objective { get => _objective; set => _objective = value; }
         public Vector3 Coordinates { get => _coordinates; set => _coordinates = value; }
         public List<QuestText> QuestText { get => _questText; set => _questText = value; }
@@ -48,6 +50,8 @@ namespace RoleplayingQuestCore
         public bool ObjectiveImmediatelySatisfiesParent { get => _objectiveImmediatelySatisfiesParent; set => _objectiveImmediatelySatisfiesParent = value; }
         public int Index { get => _index; set => _index = value; }
         public string Id { get => _id; set => _id = value; }
+        public string TerritoryDiscriminator { get => _territoryDiscriminator; set => _territoryDiscriminator = value; }
+        public bool UsesTerritoryDiscriminator { get => _usesTerritoryDiscriminator; set => _usesTerritoryDiscriminator = value; }
 
         public List<string> EnumerateCharactersAtObjective()
         {

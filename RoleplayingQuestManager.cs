@@ -115,7 +115,7 @@ namespace RoleplayingQuestCore
             ZipFile.CreateFromDirectory(path, zipPath);
         }
 
-        public List<Tuple<int, QuestObjective, RoleplayingQuest>> GetActiveQuestChainObjectivesInZone(int territoryId)
+        public List<Tuple<int, QuestObjective, RoleplayingQuest>> GetActiveQuestChainObjectivesInZone(int territoryId, string discriminator)
         {
             List<Tuple<int, QuestObjective, RoleplayingQuest>> list = new List<Tuple<int, QuestObjective, RoleplayingQuest>>();
             for (int i = 0; i < _questChains.Count; i++)
@@ -137,7 +137,7 @@ namespace RoleplayingQuestCore
                         var questObjectives = value.Value.QuestObjectives[progressIndex].GetAllSubObjectives();
                         foreach (var objective in questObjectives)
                         {
-                            if (objective.TerritoryId == territoryId)
+                            if (objective.TerritoryId == territoryId && (objective.UsesTerritoryDiscriminator ? (objective.TerritoryDiscriminator == discriminator) : true))
                             {
                                 if (objective.SubObjectivesComplete())
                                 {
