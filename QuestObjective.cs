@@ -15,7 +15,7 @@ namespace RoleplayingQuestCore
         ObjectiveStatusType _objectiveStatus = ObjectiveStatusType.Complete;
         ObjectiveTriggerType _typeOfObjectiveTrigger = ObjectiveTriggerType.NormalInteraction;
         Dictionary<string, Transform> _npcStartingPositions = new Dictionary<string, Transform>();
-        List<QuestText> _questText = new List<QuestText>();
+        List<QuestEvent> _questText = new List<QuestEvent>();
         List<QuestObjective> _subObjectives = new List<QuestObjective>();
         string triggerText = "";
         bool _objectiveCompleted = false;
@@ -34,7 +34,7 @@ namespace RoleplayingQuestCore
         public int TerritoryId { get => _territoryId; set => _territoryId = value; }
         public string Objective { get => _objective; set => _objective = value; }
         public Vector3 Coordinates { get => _coordinates; set => _coordinates = value; }
-        public List<QuestText> QuestText { get => _questText; set => _questText = value; }
+        public List<QuestEvent> QuestText { get => _questText; set => _questText = value; }
         public QuestPointType TypeOfQuestPoint { get => _typeOfQuestPoint; set => _typeOfQuestPoint = value; }
         public ObjectiveStatusType ObjectiveStatus { get => _objectiveStatus; set => _objectiveStatus = value; }
         public ObjectiveTriggerType TypeOfObjectiveTrigger { get => _typeOfObjectiveTrigger; set => _typeOfObjectiveTrigger = value; }
@@ -56,7 +56,7 @@ namespace RoleplayingQuestCore
         public List<string> EnumerateCharactersAtObjective()
         {
             List<string> charactersAtObjective = new List<string>();
-            foreach (QuestText questText in _questText)
+            foreach (QuestEvent questText in _questText)
             {
                 if (!charactersAtObjective.Contains(questText.NpcName))
                 {

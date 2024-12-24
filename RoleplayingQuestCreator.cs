@@ -91,7 +91,7 @@ namespace RoleplayingQuestCore
             _currentQuest.QuestObjectives.Add(questObjective);
         }
 
-        public void AddQuestText(int selectedObjective, QuestText questText)
+        public void AddQuestText(int selectedObjective, QuestEvent questText)
         {
             _currentQuest.QuestObjectives[selectedObjective].QuestText.Add(questText);
         }

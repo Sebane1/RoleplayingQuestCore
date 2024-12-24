@@ -16,7 +16,7 @@ namespace RoleplayingQuestCore
         
         private float _minimumDistance = 3;
         public event EventHandler<QuestDisplayObject> OnQuestTextTriggered;
-        public event EventHandler OnQuestStarted;
+        public event EventHandler<RoleplayingQuest> OnQuestStarted;
         public event EventHandler<RoleplayingQuest> OnQuestCompleted;
         public event EventHandler<QuestObjective> OnObjectiveCompleted;
         public event EventHandler<RoleplayingQuest> OnQuestAcceptancePopup;
@@ -313,7 +313,7 @@ namespace RoleplayingQuestCore
                                                     bool firstObjective = _questProgression[item.QuestId] == 0;
                                                     if (firstObjective)
                                                     {
-                                                        OnQuestStarted?.Invoke(this, EventArgs.Empty);
+                                                        OnQuestStarted?.Invoke(this, knownQuestItem);
                                                     }
                                                     knownObjective.TriggerObjectiveCompletion();
                                                     AddCompletedObjective(item, knownObjective);

@@ -1,6 +1,6 @@
 namespace RoleplayingQuestCore
 {
-    public class QuestText
+    public class QuestEvent
     {
         private int objectiveNumberToSkipTo = 0;
         int _faceExpression = 0;
@@ -9,17 +9,18 @@ namespace RoleplayingQuestCore
         string _npcName = "Name here.";
         string _dialogue = "Text goes here.";
         string _dialogueAudio = "none.mp3";
-        string _dialogueBackground = "none.jpg";
+        string _eventBackground = "none.jpg";
         string _appearanceSwap = "none.mcdf";
+        string _playerAppearanceSwap = "none.mcdf";
         string _objectiveIdToComplete = "";
         int _dialogueBoxStyle = 0;
-        
 
-        DialogueEndBehaviourType dialogueEndBehaviour = DialogueEndBehaviourType.None;
-        DialogueBackgroundType _dialogueBackgroundType = DialogueBackgroundType.None;
-        DialogueConditionType _conditionForDialogueToOccur = DialogueConditionType.None;
 
-        int _dialogueNumberToSkipTo = 0;
+        EventEndBehaviourType _eventEndBehaviour = EventEndBehaviourType.None;
+        EventBackgroundType _eventBackgroundType = EventBackgroundType.None;
+        EventConditionType _conditionForEventToOccur = EventConditionType.None;
+
+        int _eventNumberToSkipTo = 0;
 
         List<BranchingChoice> _branchingChoices = new List<BranchingChoice>();
         private string _npcAlias = "";
@@ -57,45 +58,49 @@ namespace RoleplayingQuestCore
         public string DialogueAudio { get => _dialogueAudio; set => _dialogueAudio = value; }
         public List<BranchingChoice> BranchingChoices { get => _branchingChoices; set => _branchingChoices = value; }
 
-        public int DialogueNumberToSkipTo { get => _dialogueNumberToSkipTo; set => _dialogueNumberToSkipTo = value; }
-        public string DialogueBackground { get => _dialogueBackground; set => _dialogueBackground = value; }
-        public DialogueEndBehaviourType DialogueEndBehaviour { get => dialogueEndBehaviour; set => dialogueEndBehaviour = value; }
+        public int EventNumberToSkipTo { get => _eventNumberToSkipTo; set => _eventNumberToSkipTo = value; }
+        public string EventBackground { get => _eventBackground; set => _eventBackground = value; }
+        public EventEndBehaviourType EventEndBehaviour { get => _eventEndBehaviour; set => _eventEndBehaviour = value; }
 
-        [Obsolete("This is no longer used. Please use DialogueEndBehavior property")]
-        public bool DialogueSkipsToDialogueNumber
-        {
-            set
-            {
-                if (value)
-                {
-                    dialogueEndBehaviour = DialogueEndBehaviourType.DialogueSkipsToDialogueNumber;
-                }
-            }
-        }
 
-        public DialogueBackgroundType TypeOfDialogueBackground { get => _dialogueBackgroundType; set => _dialogueBackgroundType = value; }
+        public EventBackgroundType TypeOfEventBackground { get => _eventBackgroundType; set => _eventBackgroundType = value; }
         public int DialogueBoxStyle { get => _dialogueBoxStyle; set => _dialogueBoxStyle = value; }
         public string AppearanceSwap { get => _appearanceSwap; set => _appearanceSwap = value; }
         public bool LoopAnimation { get => _loopAnimation; set => _loopAnimation = value; }
         public int ObjectiveNumberToSkipTo { get => objectiveNumberToSkipTo; set => objectiveNumberToSkipTo = value; }
-        public DialogueConditionType ConditionForDialogueToOccur { get => _conditionForDialogueToOccur; set => _conditionForDialogueToOccur = value; }
+        public EventConditionType ConditionForDialogueToOccur { get => _conditionForEventToOccur; set => _conditionForEventToOccur = value; }
         public string ObjectiveIdToComplete { get => _objectiveIdToComplete; set => _objectiveIdToComplete = value; }
 
-        public enum DialogueEndBehaviourType
+
+
+        #region Legacy
+
+        [Obsolete("This is no longer used. Please use EventNumberToSkipTo property")]
+        public int DialogueNumberToSkipTo { set => EventNumberToSkipTo = value; }
+        [Obsolete("This is no longer used. Please use EventBackground property")]
+        public string DialogueBackground { set => EventBackground = value; }
+        [Obsolete("This is no longer used. Please use EventEndBehaviour property")]
+        public EventEndBehaviourType DialogueEndBehaviour { set => EventEndBehaviour = value; }
+        [Obsolete("This is no longer used. Please use TypeOfEventBackground property")]
+        public EventBackgroundType TypeOfDialogueBackground { set => TypeOfEventBackground = value; }
+
+        #endregion
+        public enum EventEndBehaviourType
         {
             None = 0,
-            DialogueSkipsToDialogueNumber = 1,
-            DialogueEndsEarlyWhenHit = 2,
-            DialogueEndsEarlyWhenHitNoProgression = 3,
-            DialogueEndsEarlyWhenHitAndSkipsToObjective = 4,
+            EventSkipsToDialogueNumber = 1,
+            EventEndsEarlyWhenHit = 2,
+            EventEndsEarlyWhenHitNoProgression = 3,
+            EventEndsEarlyWhenHitAndSkipsToObjective = 4,
         }
-        public enum DialogueBackgroundType
+        public enum EventBackgroundType
         {
             None = 0,
             Image = 1,
             Video = 2,
+            ImageTransparent = 3,
         }
-        public enum DialogueConditionType
+        public enum EventConditionType
         {
             None = 0,
             CompletedSpecificObjectiveId = 1,

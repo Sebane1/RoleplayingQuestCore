@@ -13,7 +13,7 @@ namespace RoleplayingQuestCore
         RoleplayingQuest roleplayingQuest = new RoleplayingQuest();
         int dialogueToJumpTo = 0;
 
-        public int DialogueToJumpTo { get => dialogueToJumpTo; set => dialogueToJumpTo = value; }
+        public int EventToJumpTo { get => dialogueToJumpTo; set => dialogueToJumpTo = value; }
         public RoleplayingQuest RoleplayingQuest { get => roleplayingQuest; set => roleplayingQuest = value; }
         public BranchingChoiceType ChoiceType { get => choiceType; set => choiceType = value; }
         public string ChoiceText { get => choiceText; set => choiceText = value; }

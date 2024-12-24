@@ -8,6 +8,10 @@ namespace RoleplayingQuestCore
         string _questDescription = "Quest Description";
         string _questId = "";
         string _questThumbnailPath = "";
+        string _questStartTitleCard = "";
+        string _questEndTitleCard = "";
+        string _questStartTitleSound = "";
+        string _questEndTitleSound = "";
         string _foundPath = "";
         QuestRewardType _typeOfReward = QuestRewardType.None;
         string _questReward = "";
@@ -42,6 +46,10 @@ namespace RoleplayingQuestCore
         public string QuestThumbnailPath { get => _questThumbnailPath; set => _questThumbnailPath = value; }
         public string FoundPath { get => _foundPath; set => _foundPath = value; }
         public Dictionary<int, NpcInformation> NpcCustomization { get => _npcCustomization; set => _npcCustomization = value; }
+        public string QuestStartTitleCard { get => _questStartTitleCard; set => _questStartTitleCard = value; }
+        public string QuestEndTitleCard { get => _questEndTitleCard; set => _questEndTitleCard = value; }
+        public string QuestStartTitleSound { get => _questStartTitleSound; set => _questStartTitleSound = value; }
+        public string QuestEndTitleSound { get => _questEndTitleSound; set => _questEndTitleSound = value; }
 
         public void ConfigureSubQuest(RoleplayingQuest currentQuest)
         {
