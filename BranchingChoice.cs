@@ -20,7 +20,7 @@ namespace RoleplayingQuestCore
 
         public enum BranchingChoiceType
         {
-            SkipToDialogueNumber,
+            SkipToEventNumber,
             BranchingQuestline
         }
     }
