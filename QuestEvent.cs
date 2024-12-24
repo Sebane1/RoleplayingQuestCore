@@ -76,13 +76,13 @@ namespace RoleplayingQuestCore
         #region Legacy
 
         [Obsolete("This is no longer used. Please use EventNumberToSkipTo property")]
-        public int DialogueNumberToSkipTo { set => EventNumberToSkipTo = value; }
+        public int DialogueNumberToSkipTo { set => _eventNumberToSkipTo = value; }
         [Obsolete("This is no longer used. Please use EventBackground property")]
-        public string DialogueBackground { set => EventBackground = value; }
+        public string DialogueBackground { set => _eventBackground = value; }
         [Obsolete("This is no longer used. Please use EventEndBehaviour property")]
-        public EventEndBehaviourType DialogueEndBehaviour { set => EventEndBehaviour = value; }
+        public EventEndBehaviourType DialogueEndBehaviour { set => _eventEndBehaviour = value; }
         [Obsolete("This is no longer used. Please use TypeOfEventBackground property")]
-        public EventBackgroundType TypeOfDialogueBackground { set => TypeOfEventBackground = value; }
+        public EventBackgroundType TypeOfDialogueBackground { set => _eventBackgroundType = value; }
 
         #endregion
         public enum EventEndBehaviourType

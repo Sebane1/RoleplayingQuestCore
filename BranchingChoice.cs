@@ -11,12 +11,17 @@ namespace RoleplayingQuestCore
         string choiceText = "";
         BranchingChoiceType choiceType;
         RoleplayingQuest roleplayingQuest = new RoleplayingQuest();
-        int dialogueToJumpTo = 0;
+        int eventToJumpTo = 0;
 
-        public int EventToJumpTo { get => dialogueToJumpTo; set => dialogueToJumpTo = value; }
+        public int EventToJumpTo { get => eventToJumpTo; set => eventToJumpTo = value; }
         public RoleplayingQuest RoleplayingQuest { get => roleplayingQuest; set => roleplayingQuest = value; }
         public BranchingChoiceType ChoiceType { get => choiceType; set => choiceType = value; }
         public string ChoiceText { get => choiceText; set => choiceText = value; }
+
+        #region Legacy
+        [Obsolete("This is no longer used. Please use EventToJumpTo property")]
+        public int DialogueToJumpTo { set => eventToJumpTo = value; }
+        #endregion
 
         public enum BranchingChoiceType
         {
