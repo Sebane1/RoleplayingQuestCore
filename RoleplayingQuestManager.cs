@@ -13,7 +13,7 @@ namespace RoleplayingQuestCore
         private Dictionary<string, string> _completedQuestChains = new Dictionary<string, string>();
         private Dictionary<string, int> _questProgression = new Dictionary<string, int>();
         private string _questInstallFolder = "";
-        
+
         private float _minimumDistance = 3;
         public event EventHandler<QuestDisplayObject> OnQuestTextTriggered;
         public event EventHandler<RoleplayingQuest> OnQuestStarted;
@@ -259,7 +259,12 @@ namespace RoleplayingQuestCore
 
         public void SkipToObjective(RoleplayingQuest roleplayingQuest, int objectiveIndex)
         {
+            bool firstObjective = !_questProgression.ContainsKey(roleplayingQuest.QuestId) ? true : _questProgression[roleplayingQuest.QuestId] == 0;
             _questProgression[roleplayingQuest.QuestId] = objectiveIndex;
+            if (firstObjective)
+            {
+                OnQuestStarted?.Invoke(this, roleplayingQuest);
+            }
         }
 
         public void AttemptProgressingQuestObjective(QuestObjective.ObjectiveTriggerType triggerType = QuestObjective.ObjectiveTriggerType.NormalInteraction, string triggerPhrase = "", bool ignoreDistance = false)
