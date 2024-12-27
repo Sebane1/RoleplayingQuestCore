@@ -156,7 +156,7 @@ namespace RoleplayingQuestCore
             _mainPlayer = gameObject;
         }
 
-        public bool SwapMCDF(RoleplayingQuest roleplayingQuest, string name, string mcdf)
+        public bool SwapAppearanceData(RoleplayingQuest roleplayingQuest, string name, string appearanceData)
         {
             bool appearanceDataWasReplaced = false;
             bool nameMatchFound = false;
@@ -165,9 +165,9 @@ namespace RoleplayingQuestCore
                 if (roleplayingQuest.NpcCustomization[i].NpcName == name)
                 {
                     nameMatchFound = true;
-                    if (roleplayingQuest.NpcCustomization[i].AppearanceData != mcdf)
+                    if (roleplayingQuest.NpcCustomization[i].AppearanceData != appearanceData)
                     {
-                        roleplayingQuest.NpcCustomization[i].AppearanceData = mcdf;
+                        roleplayingQuest.NpcCustomization[i].AppearanceData = appearanceData;
                         appearanceDataWasReplaced = true;
                     }
                     break;
@@ -178,12 +178,13 @@ namespace RoleplayingQuestCore
                 roleplayingQuest.NpcCustomization[roleplayingQuest.NpcCustomization.Count] = new NpcInformation()
                 {
                     NpcName = name,
-                    AppearanceData = mcdf
+                    AppearanceData = appearanceData
                 };
                 appearanceDataWasReplaced = true;
             }
             return appearanceDataWasReplaced;
         }
+
         public void AddQuest(string questPath, bool resetsProgress = true, bool reloadQuestData = false)
         {
             var quest = JsonConvert.DeserializeObject<RoleplayingQuest>(File.ReadAllText(questPath));
@@ -329,8 +330,6 @@ namespace RoleplayingQuestCore
                                                     bool objectivesCompleted = _questProgression[item.QuestId] >= item.QuestObjectives.Count;
                                                     if (objectivesCompleted)
                                                     {
-                                                        ////_questChains.Remove(knownQuestItem.QuestId);
-                                                        ////_questProgression.Remove(knownQuestItem.QuestId);
                                                         _completedQuestChains[knownQuestItem.QuestId] = knownQuestItem.SubQuestId;
                                                         OnQuestCompleted?.Invoke(this, item);
                                                     }
