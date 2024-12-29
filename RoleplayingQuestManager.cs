@@ -162,15 +162,25 @@ namespace RoleplayingQuestCore
             bool nameMatchFound = false;
             for (int i = 0; i < roleplayingQuest.NpcCustomization.Count; i++)
             {
-                if (roleplayingQuest.NpcCustomization[i].NpcName == name)
+                try
                 {
-                    nameMatchFound = true;
-                    if (roleplayingQuest.NpcCustomization[i].AppearanceData != appearanceData)
+                    if (roleplayingQuest.NpcCustomization.ContainsKey(i))
                     {
-                        roleplayingQuest.NpcCustomization[i].AppearanceData = appearanceData;
-                        appearanceDataWasReplaced = true;
+                        if (roleplayingQuest.NpcCustomization[i].NpcName == name)
+                        {
+                            nameMatchFound = true;
+                            if (roleplayingQuest.NpcCustomization[i].AppearanceData != appearanceData)
+                            {
+                                roleplayingQuest.NpcCustomization[i].AppearanceData = appearanceData;
+                                appearanceDataWasReplaced = true;
+                            }
+                            break;
+                        }
                     }
-                    break;
+                }
+                catch
+                {
+
                 }
             }
             if (!nameMatchFound)
