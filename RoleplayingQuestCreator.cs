@@ -42,7 +42,7 @@ namespace RoleplayingQuestCore
         }
         public RoleplayingQuest ImportQuestline(string questPath)
         {
-           return JsonConvert.DeserializeObject<RoleplayingQuest>(File.ReadAllText(questPath));
+            return JsonConvert.DeserializeObject<RoleplayingQuest>(File.ReadAllText(questPath));
         }
         public void EditQuest(RoleplayingQuest currentQuest)
         {
@@ -83,7 +83,7 @@ namespace RoleplayingQuestCore
         public void SetStartingTransformDataToPlayer(IQuestGameObject questGameObject, Transform item)
         {
             item.Position = questGameObject.Position;
-            item.EulerRotation = questGameObject.Rotation;
+            item.EulerRotation = new Vector3(0, CoordinateUtility.ConvertRadiansToDegrees(questGameObject.Rotation.Y) + 180, 0);
         }
 
         public void AddQuestObjective(QuestObjective questObjective)
