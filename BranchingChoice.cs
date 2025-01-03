@@ -9,7 +9,7 @@ namespace RoleplayingQuestCore
         int _eventToJumpToFailure = 0;
         int _minimumDiceRoll = 0;
 
-        List<int> _randomizedEventsToSkipTo = new List<int>() { 0 };
+        List<int> _randomizedEventsToSkipTo = new List<int>();
         public int EventToJumpTo { get => _eventToJumpTo; set => _eventToJumpTo = value; }
         public RoleplayingQuest RoleplayingQuest { get => _roleplayingQuest; set => _roleplayingQuest = value; }
         public BranchingChoiceType ChoiceType { get => _choiceType; set => _choiceType = value; }
