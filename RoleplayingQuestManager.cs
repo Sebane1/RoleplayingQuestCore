@@ -303,6 +303,10 @@ namespace RoleplayingQuestCore
                 {
                     objective.IsAPrimaryObjective = true;
                 }
+                if (_npcPartyMembers.ContainsKey(quest.QuestId))
+                {
+                    _npcPartyMembers.Remove(quest.QuestId);
+                }
             }
             else if (!_questProgression.ContainsKey(quest.QuestId))
             {
