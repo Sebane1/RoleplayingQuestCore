@@ -16,7 +16,7 @@ namespace RoleplayingQuestCore
         int _dialogueBoxStyle = 0;
 
 
-        EventEndBehaviourType _eventEndBehaviour = EventEndBehaviourType.None;
+        EventBehaviourType _eventEndBehaviour = EventBehaviourType.None;
         EventBackgroundType _eventBackgroundType = EventBackgroundType.None;
         EventConditionType _conditionForEventToOccur = EventConditionType.None;
 
@@ -60,7 +60,7 @@ namespace RoleplayingQuestCore
 
         public int EventNumberToSkipTo { get => _eventNumberToSkipTo; set => _eventNumberToSkipTo = value; }
         public string EventBackground { get => _eventBackground; set => _eventBackground = value; }
-        public EventEndBehaviourType EventEndBehaviour { get => _eventEndBehaviour; set => _eventEndBehaviour = value; }
+        public EventBehaviourType EventEndBehaviour { get => _eventEndBehaviour; set => _eventEndBehaviour = value; }
 
 
         public EventBackgroundType TypeOfEventBackground { get => _eventBackgroundType; set => _eventBackgroundType = value; }
@@ -80,12 +80,12 @@ namespace RoleplayingQuestCore
         [Obsolete("This is no longer used. Please use EventBackground property")]
         public string DialogueBackground { set => _eventBackground = value; }
         [Obsolete("This is no longer used. Please use EventEndBehaviour property")]
-        public EventEndBehaviourType DialogueEndBehaviour { set => _eventEndBehaviour = value; }
+        public EventBehaviourType DialogueEndBehaviour { set => _eventEndBehaviour = value; }
         [Obsolete("This is no longer used. Please use TypeOfEventBackground property")]
         public EventBackgroundType TypeOfDialogueBackground { set => _eventBackgroundType = value; }
 
         #endregion
-        public enum EventEndBehaviourType
+        public enum EventBehaviourType
         {
             None = 0,
             EventSkipsToDialogueNumber = 1,
