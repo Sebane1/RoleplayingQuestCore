@@ -12,6 +12,7 @@ namespace RoleplayingQuestCore
         private Dictionary<string, List<string>> _completedObjectives = new Dictionary<string, List<string>>();
         private Dictionary<string, string> _completedQuestChains = new Dictionary<string, string>();
         private Dictionary<string, int> _questProgression = new Dictionary<string, int>();
+        private Dictionary<string, Dictionary<string, NpcPartyMember>> _npcPartyMembers = new Dictionary<string, Dictionary<string, NpcPartyMember>>();
         private string _questInstallFolder = "";
 
         private float _minimumDistance = 3;
@@ -21,12 +22,16 @@ namespace RoleplayingQuestCore
         public event EventHandler<QuestObjective> OnObjectiveCompleted;
         public event EventHandler<RoleplayingQuest> OnQuestAcceptancePopup;
 
-        public RoleplayingQuestManager(Dictionary<string, RoleplayingQuest> questChains, Dictionary<string, int> questProgression, Dictionary<string, List<string>> completedObjectives, string questInstallFolder)
+        public RoleplayingQuestManager(
+            Dictionary<string, RoleplayingQuest> questChains, Dictionary<string, int> questProgression,
+            Dictionary<string, List<string>> completedObjectives, 
+            Dictionary<string,Dictionary<string, NpcPartyMember>> npcPartyMembers, string questInstallFolder)
         {
             _questChains = questChains;
             _questProgression = questProgression;
             _completedObjectives = completedObjectives;
             _questInstallFolder = questInstallFolder;
+            _npcPartyMembers = npcPartyMembers;
         }
 
         public float MinimumDistance { get => _minimumDistance; set => _minimumDistance = value; }
@@ -47,6 +52,8 @@ namespace RoleplayingQuestCore
             set => _questInstallFolder = value;
         }
 
+        public Dictionary<string, Dictionary<string, NpcPartyMember>> NpcPartyMembers { get => _npcPartyMembers; set => _npcPartyMembers = value; }
+
         public void ScanDirectory()
         {
             if (!string.IsNullOrEmpty(_questInstallFolder))
@@ -61,6 +68,74 @@ namespace RoleplayingQuestCore
                 }
             }
         }
+
+        public void AddPartyMember(NpcPartyMember npcPartyMember)
+        {
+            if (!_npcPartyMembers.ContainsKey(npcPartyMember.QuestId))
+            {
+                _npcPartyMembers[npcPartyMember.QuestId] = new Dictionary<string, NpcPartyMember>();
+            }
+            if (!_npcPartyMembers[npcPartyMember.QuestId].ContainsKey(npcPartyMember.NpcName))
+            {
+                _npcPartyMembers[npcPartyMember.QuestId][npcPartyMember.NpcName] = npcPartyMember;
+            }
+            else
+            {
+                _npcPartyMembers[npcPartyMember.QuestId][npcPartyMember.NpcName].ZoneWhiteList.AddRange(npcPartyMember.ZoneWhiteList);
+            }
+        }
+
+        public NpcPartyMember GetNpcPartyMember(string questId, string npcName)
+        {
+            if (_npcPartyMembers.ContainsKey(questId))
+            {
+                if (_npcPartyMembers[questId].ContainsKey(npcName))
+                {
+                    return _npcPartyMembers[questId][npcName];
+                }
+            }
+            return null;
+        }
+
+        public List<NpcPartyMember> GetPartyMembersForZone(int territory)
+        {
+            List<NpcPartyMember> list = new List<NpcPartyMember>();
+            foreach (var item in _npcPartyMembers)
+            {
+                foreach (var npcPartyMember in item.Value)
+                {
+                    if (npcPartyMember.Value.IsWhitelistedForZone(territory))
+                    {
+                        list.Add(npcPartyMember.Value);
+                    }
+                }
+            }
+            return list;
+        }
+
+        public NpcInformation GetNpcInformation(string questId, string name)
+        {
+            if (_questChains.ContainsKey(questId))
+            {
+                foreach (var item in _questChains[questId].NpcCustomization)
+                {
+                    if (item.Value.NpcName == name)
+                    {
+                        return item.Value;
+                    }
+                }
+            }
+            return null;
+        }
+
+        public void RemovePartyMember(NpcPartyMember npcPartyMember)
+        {
+            if (_npcPartyMembers.ContainsKey(npcPartyMember.QuestId))
+            {
+                _npcPartyMembers[npcPartyMember.QuestId].Remove(npcPartyMember.NpcName);
+            }
+        }
+
         public void AddCompletedObjective(RoleplayingQuest quest, QuestObjective questObjective)
         {
             if (!_completedObjectives.ContainsKey(quest.QuestId))

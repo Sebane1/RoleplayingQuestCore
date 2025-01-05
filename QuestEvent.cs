@@ -92,7 +92,8 @@ namespace RoleplayingQuestCore
             EventEndsEarlyWhenHit = 2,
             EventEndsEarlyWhenHitNoProgression = 3,
             EventEndsEarlyWhenHitAndSkipsToObjective = 4,
-            EventEndsEarlyWhenHitAndNPCFollowsPlayer = 5
+            EventEndsEarlyWhenHitAndNPCFollowsPlayer = 5,
+            EventEndsEarlyWhenHitAndNPCStopsFollowingPlayer = 6
         }
         public enum EventBackgroundType
         {
