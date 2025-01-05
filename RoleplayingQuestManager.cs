@@ -24,8 +24,8 @@ namespace RoleplayingQuestCore
 
         public RoleplayingQuestManager(
             Dictionary<string, RoleplayingQuest> questChains, Dictionary<string, int> questProgression,
-            Dictionary<string, List<string>> completedObjectives, 
-            Dictionary<string,Dictionary<string, NpcPartyMember>> npcPartyMembers, string questInstallFolder)
+            Dictionary<string, List<string>> completedObjectives,
+            Dictionary<string, Dictionary<string, NpcPartyMember>> npcPartyMembers, string questInstallFolder)
         {
             _questChains = questChains;
             _questProgression = questProgression;
@@ -97,20 +97,32 @@ namespace RoleplayingQuestCore
             return null;
         }
 
-        public List<NpcPartyMember> GetPartyMembersForZone(int territory)
+        public List<NpcPartyMember> GetPartyMembersForZone(int territory, string discriminator)
         {
             List<NpcPartyMember> list = new List<NpcPartyMember>();
             foreach (var item in _npcPartyMembers)
             {
                 foreach (var npcPartyMember in item.Value)
                 {
-                    if (npcPartyMember.Value.IsWhitelistedForZone(territory))
+                    if (npcPartyMember.Value.IsWhitelistedForZone(territory) || QuestIdInArea(territory, discriminator, npcPartyMember.Value.QuestId))
                     {
                         list.Add(npcPartyMember.Value);
                     }
                 }
             }
             return list;
+        }
+
+        public bool QuestIdInArea(int territory, string discriminator, string questId)
+        {
+            foreach (var item in GetActiveQuestChainObjectivesInZone(territory, ""))
+            {
+                if (item.Item3.QuestId == questId)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public NpcInformation GetNpcInformation(string questId, string name)
