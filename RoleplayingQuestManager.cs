@@ -6,13 +6,13 @@ namespace RoleplayingQuestCore
 {
     public class RoleplayingQuestManager
     {
-        private const int V = 3;
         private IQuestGameObject _mainPlayer;
         private Dictionary<string, RoleplayingQuest> _questChains = new Dictionary<string, RoleplayingQuest>();
         private Dictionary<string, List<string>> _completedObjectives = new Dictionary<string, List<string>>();
         private Dictionary<string, string> _completedQuestChains = new Dictionary<string, string>();
         private Dictionary<string, int> _questProgression = new Dictionary<string, int>();
         private Dictionary<string, Dictionary<string, NpcPartyMember>> _npcPartyMembers = new Dictionary<string, Dictionary<string, NpcPartyMember>>();
+        private Dictionary<string, PlayerAppearanceData> _playerAppearanceData = new Dictionary<string, PlayerAppearanceData>();
         private string _questInstallFolder = "";
 
         private float _minimumDistance = 3;
@@ -25,13 +25,34 @@ namespace RoleplayingQuestCore
         public RoleplayingQuestManager(
             Dictionary<string, RoleplayingQuest> questChains, Dictionary<string, int> questProgression,
             Dictionary<string, List<string>> completedObjectives,
-            Dictionary<string, Dictionary<string, NpcPartyMember>> npcPartyMembers, string questInstallFolder)
+            Dictionary<string, Dictionary<string, NpcPartyMember>> npcPartyMembers,
+            Dictionary<string, PlayerAppearanceData> playerAppearanceData,
+            string questInstallFolder)
         {
-            _questChains = questChains;
-            _questProgression = questProgression;
-            _completedObjectives = completedObjectives;
-            _questInstallFolder = questInstallFolder;
-            _npcPartyMembers = npcPartyMembers;
+            if (questChains != null)
+            {
+                _questChains = questChains;
+            }
+            if (questProgression != null)
+            {
+                _questProgression = questProgression;
+            }
+            if (completedObjectives != null)
+            {
+                _completedObjectives = completedObjectives;
+            }
+            if (!string.IsNullOrEmpty(questInstallFolder))
+            {
+                _questInstallFolder = questInstallFolder;
+            }
+            if (npcPartyMembers != null)
+            {
+                _npcPartyMembers = npcPartyMembers;
+            }
+            if (playerAppearanceData != null)
+            {
+                _playerAppearanceData = playerAppearanceData;
+            }
         }
 
         public float MinimumDistance { get => _minimumDistance; set => _minimumDistance = value; }
@@ -112,10 +133,21 @@ namespace RoleplayingQuestCore
             }
             return list;
         }
+        public string GetPlayerAppearanceForZone(int territory, string discriminator)
+        {
+            foreach (var item in _playerAppearanceData)
+            {
+                if (QuestIdInArea(territory, discriminator, item.Value.QuestId))
+                {
+                    return item.Value.AppearanceData;
+                }
+            }
+            return "";
+        }
 
         public bool QuestIdInArea(int territory, string discriminator, string questId)
         {
-            foreach (var item in GetActiveQuestChainObjectivesInZone(territory, ""))
+            foreach (var item in GetActiveQuestChainObjectivesInZone(territory, discriminator))
             {
                 if (item.Item3.QuestId == questId)
                 {
@@ -307,6 +339,10 @@ namespace RoleplayingQuestCore
                 {
                     _npcPartyMembers.Remove(quest.QuestId);
                 }
+                if (_playerAppearanceData.ContainsKey(quest.QuestId))
+                {
+                    _playerAppearanceData.Remove(quest.QuestId);
+                }
             }
             else if (!_questProgression.ContainsKey(quest.QuestId))
             {
@@ -457,6 +493,16 @@ namespace RoleplayingQuestCore
                     }
                 }
             }
+        }
+
+        public void AddAppearance(string questId, string customPlayerMcdfPath, bool playerAppearanceSwapAffectsRacial)
+        {
+            _playerAppearanceData[questId] = new PlayerAppearanceData()
+            {
+                AppearanceData = customPlayerMcdfPath,
+                QuestId = questId,
+                AppearanceReplacesBodyTraits = playerAppearanceSwapAffectsRacial
+            };
         }
     }
 }

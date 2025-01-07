@@ -12,6 +12,7 @@ namespace RoleplayingQuestCore
         string _eventBackground = "none.jpg";
         string _appearanceSwap = "none.mcdf";
         string _playerAppearanceSwap = "none.mcdf";
+        AppearanceSwapType _playerAppearanceApplicationType = AppearanceSwapType.EntireAppearance;
         string _objectiveIdToComplete = "";
         int _dialogueBoxStyle = 0;
 
@@ -52,6 +53,18 @@ namespace RoleplayingQuestCore
                 _bodyExpression = value;
             }
         }
+        #region Legacy
+
+        [Obsolete("This is no longer used. Please use EventNumberToSkipTo property")]
+        public int DialogueNumberToSkipTo { set => _eventNumberToSkipTo = value; }
+        [Obsolete("This is no longer used. Please use EventBackground property")]
+        public string DialogueBackground { set => _eventBackground = value; }
+        [Obsolete("This is no longer used. Please use EventEndBehaviour property")]
+        public EventBehaviourType DialogueEndBehaviour { set => _eventEndBehaviour = value; }
+        [Obsolete("This is no longer used. Please use TypeOfEventBackground property")]
+        public EventBackgroundType TypeOfDialogueBackground { set => _eventBackgroundType = value; }
+
+        #endregion
         public string NpcAlias { get => _npcAlias; set => _npcAlias = value; }
         public string NpcName { get => _npcName; set => _npcName = value; }
         public string Dialogue { get => _dialogue; set => _dialogue = value; }
@@ -70,21 +83,9 @@ namespace RoleplayingQuestCore
         public int ObjectiveNumberToSkipTo { get => objectiveNumberToSkipTo; set => objectiveNumberToSkipTo = value; }
         public EventConditionType ConditionForDialogueToOccur { get => _conditionForEventToOccur; set => _conditionForEventToOccur = value; }
         public string ObjectiveIdToComplete { get => _objectiveIdToComplete; set => _objectiveIdToComplete = value; }
+        public string PlayerAppearanceSwap { get => _playerAppearanceSwap; set => _playerAppearanceSwap = value; }
+        public AppearanceSwapType PlayerAppearanceSwapType { get => _playerAppearanceApplicationType; set => _playerAppearanceApplicationType = value; }
 
-
-
-        #region Legacy
-
-        [Obsolete("This is no longer used. Please use EventNumberToSkipTo property")]
-        public int DialogueNumberToSkipTo { set => _eventNumberToSkipTo = value; }
-        [Obsolete("This is no longer used. Please use EventBackground property")]
-        public string DialogueBackground { set => _eventBackground = value; }
-        [Obsolete("This is no longer used. Please use EventEndBehaviour property")]
-        public EventBehaviourType DialogueEndBehaviour { set => _eventEndBehaviour = value; }
-        [Obsolete("This is no longer used. Please use TypeOfEventBackground property")]
-        public EventBackgroundType TypeOfDialogueBackground { set => _eventBackgroundType = value; }
-
-        #endregion
         public enum EventBehaviourType
         {
             None = 0,
@@ -108,6 +109,10 @@ namespace RoleplayingQuestCore
         {
             None = 0,
             CompletedSpecificObjectiveId = 1,
+        }
+        public enum AppearanceSwapType
+        {
+            EntireAppearance = 0
         }
     }
 }
