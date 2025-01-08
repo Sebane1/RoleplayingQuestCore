@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static RoleplayingQuestCore.QuestEvent;
 
 namespace RoleplayingQuestCore
 {
@@ -10,10 +6,10 @@ namespace RoleplayingQuestCore
     {
         string _questId = "";
         string _appearanceData = "";
-        bool _appearanceReplacesBodyTraits = false;
+        AppearanceSwapType _appearanceSwapType = AppearanceSwapType.EntireAppearance;
 
         public string QuestId { get => _questId; set => _questId = value; }
         public string AppearanceData { get => _appearanceData; set => _appearanceData = value; }
-        public bool AppearanceReplacesBodyTraits { get => _appearanceReplacesBodyTraits; set => _appearanceReplacesBodyTraits = value; }
+        public AppearanceSwapType AppearanceSwapType { get => _appearanceSwapType; set => _appearanceSwapType = value; }
     }
 }

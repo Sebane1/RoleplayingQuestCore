@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System.IO.Compression;
 using System.Numerics;
+using static RoleplayingQuestCore.QuestEvent;
 
 namespace RoleplayingQuestCore
 {
@@ -133,16 +134,16 @@ namespace RoleplayingQuestCore
             }
             return list;
         }
-        public string GetPlayerAppearanceForZone(int territory, string discriminator)
+        public PlayerAppearanceData GetPlayerAppearanceForZone(int territory, string discriminator)
         {
             foreach (var item in _playerAppearanceData)
             {
                 if (QuestIdInArea(territory, discriminator, item.Value.QuestId))
                 {
-                    return item.Value.AppearanceData;
+                    return item.Value;
                 }
             }
-            return "";
+            return null;
         }
 
         public bool QuestIdInArea(int territory, string discriminator, string questId)
@@ -495,14 +496,18 @@ namespace RoleplayingQuestCore
             }
         }
 
-        public void AddAppearance(string questId, string customPlayerMcdfPath, bool playerAppearanceSwapAffectsRacial)
+        public void AddPlayerAppearance(string questId, string customPlayerMcdfPath, AppearanceSwapType apearanceSwapType)
         {
             _playerAppearanceData[questId] = new PlayerAppearanceData()
             {
                 AppearanceData = customPlayerMcdfPath,
                 QuestId = questId,
-                AppearanceReplacesBodyTraits = playerAppearanceSwapAffectsRacial
+                AppearanceSwapType = apearanceSwapType
             };
+        }
+        public void RemovePlayerAppearance(string questId)
+        {
+            _playerAppearanceData.Remove(questId);
         }
     }
 }

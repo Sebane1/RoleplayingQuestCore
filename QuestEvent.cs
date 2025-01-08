@@ -112,7 +112,13 @@ namespace RoleplayingQuestCore
         }
         public enum AppearanceSwapType
         {
-            EntireAppearance = 0
+            EntireAppearance = 0,
+            RevertAppearance = 1,
+            PreserveRace = 2,
+            PreserveMasculinityAndFemininity = 3,
+            PreserveAllPhysicalTraits = 4,
+            OnlyGlamourerData = 5,
+            OnlyCustomizeData = 6
         }
     }
 }
