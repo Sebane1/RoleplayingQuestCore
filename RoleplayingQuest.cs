@@ -72,7 +72,7 @@ namespace RoleplayingQuestCore
         {
             None = 0,
             SecretMessage = 1,
-            DownloadLink = 2,
+            OnlineLink = 2,
             MediaFile = 3
         }
     }
