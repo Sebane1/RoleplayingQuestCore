@@ -321,7 +321,6 @@ namespace RoleplayingQuestCore
             quest.FoundPath = Path.GetDirectoryName(questPath);
             if (!_questChains.ContainsKey(quest.QuestId) || resetsProgress || reloadQuestData)
             {
-                quest.HasQuestAcceptancePopup = !reloadQuestData;
                 _questChains[quest.QuestId] = quest;
             }
             if (resetsProgress)

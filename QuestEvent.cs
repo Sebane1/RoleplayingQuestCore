@@ -5,7 +5,10 @@ namespace RoleplayingQuestCore
         private int objectiveNumberToSkipTo = 0;
         int _faceExpression = 0;
         int _bodyExpression = 0;
+        private int _faceExpressionPlayer = 0;
+        private int _bodyExpressionPlayer = 0;
         bool _loopAnimation = false;
+        bool _loopAnimationPlayer = false;
         string _npcName = "Name here.";
         string _dialogue = "Text goes here.";
         string _dialogueAudio = "none.mp3";
@@ -15,7 +18,7 @@ namespace RoleplayingQuestCore
         AppearanceSwapType _playerAppearanceApplicationType = AppearanceSwapType.EntireAppearance;
         string _objectiveIdToComplete = "";
         int _dialogueBoxStyle = 0;
-
+        int _timeLimit = 0;
 
         EventBehaviourType _eventEndBehaviour = EventBehaviourType.None;
         EventBackgroundType _eventBackgroundType = EventBackgroundType.None;
@@ -25,6 +28,7 @@ namespace RoleplayingQuestCore
 
         List<BranchingChoice> _branchingChoices = new List<BranchingChoice>();
         private string _npcAlias = "";
+        private bool _eventHasNoReading;
 
         public int FaceExpression
         {
@@ -53,6 +57,35 @@ namespace RoleplayingQuestCore
                 _bodyExpression = value;
             }
         }
+
+        public int FaceExpressionPlayer
+        {
+            get => _faceExpressionPlayer;
+
+            set
+            {
+                if (value < 0)
+                {
+                    value = 0;
+                }
+                _faceExpressionPlayer = value;
+            }
+        }
+
+        public int BodyExpressionPlayer
+        {
+            get => _bodyExpressionPlayer;
+
+            set
+            {
+                if (value < 0)
+                {
+                    value = 0;
+                }
+                _bodyExpressionPlayer = value;
+            }
+        }
+
         #region Legacy
 
         [Obsolete("This is no longer used. Please use EventNumberToSkipTo property")]
@@ -85,6 +118,9 @@ namespace RoleplayingQuestCore
         public string ObjectiveIdToComplete { get => _objectiveIdToComplete; set => _objectiveIdToComplete = value; }
         public string PlayerAppearanceSwap { get => _playerAppearanceSwap; set => _playerAppearanceSwap = value; }
         public AppearanceSwapType PlayerAppearanceSwapType { get => _playerAppearanceApplicationType; set => _playerAppearanceApplicationType = value; }
+        public int TimeLimit { get => _timeLimit; set => _timeLimit = value; }
+        public bool EventHasNoReading { get => _eventHasNoReading; set => _eventHasNoReading = value; }
+        public bool LoopAnimationPlayer { get => _loopAnimationPlayer; set => _loopAnimationPlayer = value; }
 
         public enum EventBehaviourType
         {
@@ -96,7 +132,9 @@ namespace RoleplayingQuestCore
             EventEndsEarlyWhenHitAndNPCFollowsPlayer = 5,
             EventEndsEarlyWhenHitAndNPCStopsFollowingPlayer = 6,
             NPCFollowsPlayer = 7,
-            NPCStopsFollowingPlayer = 8
+            NPCStopsFollowingPlayer = 8,
+            EventEndsEarlyWhenHitAndStartsTimer = 9,
+            StartsTimer = 10,
         }
         public enum EventBackgroundType
         {
@@ -109,6 +147,12 @@ namespace RoleplayingQuestCore
         {
             None = 0,
             CompletedSpecificObjectiveId = 1,
+            PlayerClanId = 2,
+            PlayerPhysicalPresentationId = 3,
+            PlayerClassId = 4,
+            PlayerOutfitTopId = 5,
+            PlayerOutfitBottomId = 6,
+            TimeLimitFailure
         }
         public enum AppearanceSwapType
         {
