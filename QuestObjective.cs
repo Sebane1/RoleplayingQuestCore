@@ -26,6 +26,7 @@ namespace RoleplayingQuestCore
 
         private bool _dontShowOnMap = false;
         private float _maximum3dIndicatorDistance = 48;
+        private bool _playerPositionIsLockedDuringEvents = true;
 
         public QuestObjective()
         {
@@ -54,6 +55,7 @@ namespace RoleplayingQuestCore
         public string TerritoryDiscriminator { get => _territoryDiscriminator; set => _territoryDiscriminator = value; }
         public bool UsesTerritoryDiscriminator { get => _usesTerritoryDiscriminator; set => _usesTerritoryDiscriminator = value; }
         public Collider Collider { get => _collider; set => _collider = value; }
+        public bool PlayerPositionIsLockedDuringEvents { get => _playerPositionIsLockedDuringEvents; set => _playerPositionIsLockedDuringEvents = value; }
 
         public List<string> EnumerateCharactersAtObjective()
         {
