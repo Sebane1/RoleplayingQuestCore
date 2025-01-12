@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace RoleplayingQuestCore
 {
     public class QuestEvent
@@ -19,7 +21,10 @@ namespace RoleplayingQuestCore
         string _objectiveIdToComplete = "";
         int _dialogueBoxStyle = 0;
         int _timeLimit = 0;
-
+        bool _looksAtPlayerDuringEvent = true;
+        bool _eventSetsNewNpcCoorinates = false;
+        Vector3 _npcMovementPosition = new Vector3();
+        Vector3 _npcMovementRotation = new Vector3();
         EventBehaviourType _eventEndBehaviour = EventBehaviourType.None;
         EventBackgroundType _eventBackgroundType = EventBackgroundType.None;
         EventConditionType _conditionForEventToOccur = EventConditionType.None;
@@ -121,6 +126,10 @@ namespace RoleplayingQuestCore
         public int TimeLimit { get => _timeLimit; set => _timeLimit = value; }
         public bool EventHasNoReading { get => _eventHasNoReading; set => _eventHasNoReading = value; }
         public bool LoopAnimationPlayer { get => _loopAnimationPlayer; set => _loopAnimationPlayer = value; }
+        public bool LooksAtPlayerDuringEvent { get => _looksAtPlayerDuringEvent; set => _looksAtPlayerDuringEvent = value; }
+        public bool EventSetsNewNpcCoordinates { get => _eventSetsNewNpcCoorinates; set => _eventSetsNewNpcCoorinates = value; }
+        public Vector3 NpcMovementPosition { get => _npcMovementPosition; set => _npcMovementPosition = value; }
+        public Vector3 NpcMovementRotation { get => _npcMovementRotation; set => _npcMovementRotation = value; }
 
         public enum EventBehaviourType
         {

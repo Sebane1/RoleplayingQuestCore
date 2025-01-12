@@ -436,13 +436,17 @@ namespace RoleplayingQuestCore
                                                 objective.TriggerText.ToLower().Replace(" ", "").Contains(triggerPhrase.ToLower().Replace(" ", ""))
                                                 && objective.SubObjectivesComplete();
                                                 break;
-                                            case QuestObjective.ObjectiveTriggerType.SearchArea:
+                                            case QuestObjective.ObjectiveTriggerType.SubObjectivesFinished:
                                                 conditionsToProceedWereMet = objective.SubObjectivesComplete();
                                                 break;
                                             case QuestObjective.ObjectiveTriggerType.KillEnemy:
                                                 conditionsToProceedWereMet =
                                                triggerPhrase.ToLower().Replace(" ", "").Contains(objective.TriggerText.ToLower().Replace(" ", ""))
                                                 && objective.SubObjectivesComplete();
+                                                break;
+                                            case QuestObjective.ObjectiveTriggerType.BoundingTrigger:
+                                                ignoreDistance = true;
+                                                conditionsToProceedWereMet = objective.Collider.IsPointInsideCollider(_mainPlayer.Position);
                                                 break;
                                         }
                                         if (conditionsToProceedWereMet)

@@ -14,6 +14,7 @@ namespace RoleplayingQuestCore
         QuestPointType _typeOfQuestPoint = QuestPointType.NPC;
         ObjectiveStatusType _objectiveStatus = ObjectiveStatusType.Complete;
         ObjectiveTriggerType _typeOfObjectiveTrigger = ObjectiveTriggerType.NormalInteraction;
+        Collider _collider = new Collider();
         Dictionary<string, Transform> _npcStartingPositions = new Dictionary<string, Transform>();
         List<QuestEvent> _questText = new List<QuestEvent>();
         List<QuestObjective> _subObjectives = new List<QuestObjective>();
@@ -52,6 +53,7 @@ namespace RoleplayingQuestCore
         public string Id { get => _id; set => _id = value; }
         public string TerritoryDiscriminator { get => _territoryDiscriminator; set => _territoryDiscriminator = value; }
         public bool UsesTerritoryDiscriminator { get => _usesTerritoryDiscriminator; set => _usesTerritoryDiscriminator = value; }
+        public Collider Collider { get => _collider; set => _collider = value; }
 
         public List<string> EnumerateCharactersAtObjective()
         {
@@ -126,8 +128,9 @@ namespace RoleplayingQuestCore
             NormalInteraction = 0,
             DoEmote = 1,
             SayPhrase = 2,
-            SearchArea = 3,
+            SubObjectivesFinished = 3,
             KillEnemy = 4,
+            BoundingTrigger = 5,
         }
         public override string ToString()
         {
