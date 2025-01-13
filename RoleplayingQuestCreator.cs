@@ -25,7 +25,37 @@ namespace RoleplayingQuestCore
                     GenerateObjectiveNPCPositions(objective);
                 }
                 Directory.CreateDirectory(savePath);
-                File.WriteAllText(Path.Combine(savePath, "main.quest"), JsonConvert.SerializeObject(_currentQuest));
+                string path = Path.Combine(savePath, "main.quest");
+                if (File.Exists(path))
+                {
+                    try
+                    {
+                        File.Move(path, path.Replace(".quest", ".quest.bak"));
+                    }
+                    catch
+                    {
+                        File.Move(path, path.Replace(".quest", ".quest.bak2"));
+                    }
+                }
+                try
+                {
+                    using (FileStream fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                    {
+                        using (StreamWriter streamWriter = new StreamWriter(fileStream))
+                        {
+                            streamWriter.Write(JsonConvert.SerializeObject(_currentQuest));
+                        }
+                    }
+                }
+                catch {
+                    using (FileStream fileStream = new FileStream(path.Replace(".quest", ".quest.bak"), FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                    {
+                        using (StreamWriter streamWriter = new StreamWriter(fileStream))
+                        {
+                            streamWriter.Write(JsonConvert.SerializeObject(_currentQuest));
+                        }
+                    }
+                }
             }
         }
 
