@@ -30,11 +30,11 @@ namespace RoleplayingQuestCore
                 {
                     try
                     {
-                        File.Move(path, path.Replace(".quest", ".quest.bak"));
+                        File.Move(path, path.Replace(".quest", ".quest.bak"), true);
                     }
                     catch
                     {
-                        File.Move(path, path.Replace(".quest", ".quest.bak2"));
+                        File.Move(path, path.Replace(".quest", ".quest.bak2"), true);
                     }
                 }
                 try
