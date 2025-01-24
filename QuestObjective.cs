@@ -143,5 +143,13 @@ namespace RoleplayingQuestCore
         {
             _objectiveCompleted = true;
         }
+
+        public void ClearProgression()
+        {
+            foreach (var item in GetAllSubObjectives())
+            {
+                item._objectiveCompleted = false;
+            }
+        }
     }
 }

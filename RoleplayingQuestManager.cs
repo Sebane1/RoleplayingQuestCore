@@ -126,7 +126,8 @@ namespace RoleplayingQuestCore
             {
                 foreach (var npcPartyMember in item.Value)
                 {
-                    if (npcPartyMember.Value.IsWhitelistedForZone(territory) || QuestIdInArea(territory, discriminator, npcPartyMember.Value.QuestId))
+                    if (npcPartyMember.Value.IsWhitelistedForZone(territory) 
+                        || QuestIdInArea(territory, discriminator, npcPartyMember.Value.QuestId))
                     {
                         list.Add(npcPartyMember.Value);
                     }
@@ -397,7 +398,8 @@ namespace RoleplayingQuestCore
 
         public void SkipToObjective(RoleplayingQuest roleplayingQuest, int objectiveIndex)
         {
-            bool firstObjective = !_questProgression.ContainsKey(roleplayingQuest.QuestId) ? true : _questProgression[roleplayingQuest.QuestId] == 0;
+            bool firstObjective = !_questProgression.ContainsKey(roleplayingQuest.QuestId) 
+            ? true : _questProgression[roleplayingQuest.QuestId] == 0;
             _questProgression[roleplayingQuest.QuestId] = objectiveIndex;
             if (firstObjective)
             {
