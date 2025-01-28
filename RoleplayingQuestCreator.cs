@@ -47,7 +47,8 @@ namespace RoleplayingQuestCore
                         }
                     }
                 }
-                catch {
+                catch
+                {
                     using (FileStream fileStream = new FileStream(path.Replace(".quest", ".quest.bak"), FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
                     {
                         using (StreamWriter streamWriter = new StreamWriter(fileStream))
@@ -70,6 +71,50 @@ namespace RoleplayingQuestCore
                 File.WriteAllText(Path.Combine(savePath), JsonConvert.SerializeObject(roleplayingQuest));
             }
         }
+
+        public string ObjectiveToStoryScriptFormat(QuestObjective questObjective)
+        {
+            string storyScript = "";
+            foreach (var objective in questObjective.QuestText)
+            {
+                storyScript += objective.NpcName + "\r\n";
+                storyScript += objective.Dialogue + "\r\n";
+            }
+            return storyScript;
+        }
+
+        public void StoryScriptToObjectiveEvents(string script, QuestObjective questObjective)
+        {
+            string[] storyScriptItems = script.Split("\r\n");
+            for (int i = 0; i < storyScriptItems.Length; i += 2)
+            {
+                try
+                {
+                    while (string.IsNullOrWhiteSpace(storyScriptItems[i]))
+                    {
+                        i++;
+                    }
+                    if (i > questObjective.QuestText.Count)
+                    {
+                        var questText = new QuestEvent();
+                        questText.NpcName = storyScriptItems[i].Trim().Replace(":",null);
+                        questText.Dialogue = storyScriptItems[i + 1].Trim();
+                        questObjective.QuestText.Add(questText);
+                    }
+                    else
+                    {
+                        questObjective.QuestText[i].NpcName = storyScriptItems[i].Trim().Replace(":", null);
+                        questObjective.QuestText[i + 1].Dialogue = storyScriptItems[i + 1].Trim();
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+
         public RoleplayingQuest ImportQuestline(string questPath)
         {
             return JsonConvert.DeserializeObject<RoleplayingQuest>(File.ReadAllText(questPath));
