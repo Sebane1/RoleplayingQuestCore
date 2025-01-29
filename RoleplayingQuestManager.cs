@@ -486,8 +486,8 @@ namespace RoleplayingQuestCore
                                             {
                                                 OnQuestAcceptancePopup?.Invoke(this, item);
                                             }
+                                            break;
                                         }
-                                        break;
                                     }
                                 }
                             }
