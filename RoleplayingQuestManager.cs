@@ -126,7 +126,7 @@ namespace RoleplayingQuestCore
             {
                 foreach (var npcPartyMember in item.Value)
                 {
-                    if (npcPartyMember.Value.IsWhitelistedForZone(territory) 
+                    if (npcPartyMember.Value.IsWhitelistedForZone(territory)
                         || QuestIdInArea(territory, discriminator, npcPartyMember.Value.QuestId))
                     {
                         list.Add(npcPartyMember.Value);
@@ -320,10 +320,18 @@ namespace RoleplayingQuestCore
         {
             var quest = JsonConvert.DeserializeObject<RoleplayingQuest>(File.ReadAllText(questPath));
             quest.FoundPath = Path.GetDirectoryName(questPath);
+            if (reloadQuestData)
+            {
+                if (_questChains.ContainsKey(quest.QuestId))
+                {
+                    quest.HasQuestAcceptancePopup = _questChains[quest.QuestId].HasQuestAcceptancePopup;
+                }
+            }
             if (!_questChains.ContainsKey(quest.QuestId) || resetsProgress || reloadQuestData)
             {
                 _questChains[quest.QuestId] = quest;
             }
+
             if (resetsProgress)
             {
                 _questProgression[quest.QuestId] = 0;
@@ -398,7 +406,7 @@ namespace RoleplayingQuestCore
 
         public void SkipToObjective(RoleplayingQuest roleplayingQuest, int objectiveIndex)
         {
-            bool firstObjective = !_questProgression.ContainsKey(roleplayingQuest.QuestId) 
+            bool firstObjective = !_questProgression.ContainsKey(roleplayingQuest.QuestId)
             ? true : _questProgression[roleplayingQuest.QuestId] == 0;
             _questProgression[roleplayingQuest.QuestId] = objectiveIndex;
             if (firstObjective)
