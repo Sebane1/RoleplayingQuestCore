@@ -171,7 +171,8 @@ namespace RoleplayingQuestCore
             PreserveMasculinityAndFemininity = 3,
             PreserveAllPhysicalTraits = 4,
             OnlyGlamourerData = 5,
-            OnlyCustomizeData = 6
+            OnlyCustomizeData = 6,
+            OnlyModData = 7
         }
     }
 }

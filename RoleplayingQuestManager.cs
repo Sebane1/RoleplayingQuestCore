@@ -509,11 +509,11 @@ namespace RoleplayingQuestCore
             }
         }
 
-        public void AddPlayerAppearance(string questId, string customPlayerMcdfPath, AppearanceSwapType apearanceSwapType)
+        public void AddPlayerAppearance(string questId, string customPlayerAppearancePath, AppearanceSwapType apearanceSwapType)
         {
             _playerAppearanceData[questId] = new PlayerAppearanceData()
             {
-                AppearanceData = customPlayerMcdfPath,
+                AppearanceData = customPlayerAppearancePath,
                 QuestId = questId,
                 AppearanceSwapType = apearanceSwapType
             };
