@@ -86,6 +86,7 @@ namespace RoleplayingQuestCore
         public void StoryScriptToObjectiveEvents(string script, QuestObjective questObjective)
         {
             string[] storyScriptItems = script.Split("\r\n");
+            int index = 0;
             for (int i = 0; i < storyScriptItems.Length; i += 2)
             {
                 try
@@ -94,17 +95,19 @@ namespace RoleplayingQuestCore
                     {
                         i++;
                     }
-                    if (i > questObjective.QuestText.Count)
+                    if (index >= questObjective.QuestText.Count || questObjective.QuestText.Count == 0)
                     {
                         var questText = new QuestEvent();
-                        questText.NpcName = storyScriptItems[i].Trim().Replace(":",null);
+                        questText.NpcName = storyScriptItems[i].Trim().Replace(":", null);
                         questText.Dialogue = storyScriptItems[i + 1].Trim();
                         questObjective.QuestText.Add(questText);
+                        index++;
                     }
                     else
                     {
-                        questObjective.QuestText[i].NpcName = storyScriptItems[i].Trim().Replace(":", null);
-                        questObjective.QuestText[i + 1].Dialogue = storyScriptItems[i + 1].Trim();
+                        questObjective.QuestText[index].NpcName = storyScriptItems[i].Trim().Replace(":", null);
+                        questObjective.QuestText[index].Dialogue = storyScriptItems[i + 1].Trim();
+                        index++;
                     }
                 }
                 catch
