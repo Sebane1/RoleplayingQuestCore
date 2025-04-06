@@ -20,7 +20,7 @@ namespace RoleplayingQuestCore
         public event EventHandler<QuestDisplayObject> OnQuestTextTriggered;
         public event EventHandler<RoleplayingQuest> OnQuestStarted;
         public event EventHandler<RoleplayingQuest> OnQuestCompleted;
-        public event EventHandler<QuestObjective> OnObjectiveCompleted;
+        public event EventHandler<Tuple<QuestObjective, RoleplayingQuest>> OnObjectiveCompleted;
         public event EventHandler<RoleplayingQuest> OnQuestAcceptancePopup;
 
         public RoleplayingQuestManager(
@@ -486,7 +486,7 @@ namespace RoleplayingQuestCore
                                                     }
                                                     if (!firstObjective && !objectivesCompleted)
                                                     {
-                                                        OnObjectiveCompleted?.Invoke(this, knownObjective);
+                                                        OnObjectiveCompleted?.Invoke(this, new Tuple<QuestObjective, RoleplayingQuest> (knownObjective, item));
                                                     }
                                                 }, item.NpcCustomizations));
                                             }

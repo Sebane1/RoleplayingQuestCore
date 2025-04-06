@@ -28,7 +28,7 @@ namespace RoleplayingQuestCore
                 };
                 using (HttpClient httpClient = new HttpClient())
                 {
-                    httpClient.BaseAddress = new Uri("ai.hubujubu.com:5681");
+                    httpClient.BaseAddress = new Uri("http://ai.hubujubu.com:5681");
                     httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     httpClient.Timeout = new TimeSpan(0, 6, 0);
                     var post = await httpClient.PostAsync(httpClient.BaseAddress, new StringContent(JsonConvert.SerializeObject(proxiedVoiceRequest)));
