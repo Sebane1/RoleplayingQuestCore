@@ -1,17 +1,20 @@
+using LanguageConversionProxy;
+
 namespace RoleplayingQuestCore
 {
     public class RoleplayingQuest
     {
 
-        string _questAuthor = "Author Name Here";
-        string _questName = "Quest Name Goes Here";
-        string _questDescription = "Quest Description";
-        string _questId = "";
-        string _questThumbnailPath = "";
-        string _questStartTitleCard = "";
-        string _questEndTitleCard = "";
-        string _questStartTitleSound = "";
-        string _questEndTitleSound = "";
+       private string _questAuthor = "Author Name Here";
+        private string _questName = "Quest Name Goes Here";
+        private string _questDescription = "Quest Description";
+        private string _questId = "";
+        private string _questThumbnailPath = "";
+        private string _questStartTitleCard = "";
+        private string _questEndTitleCard = "";
+        private string _questStartTitleSound = "";
+        private string _questEndTitleSound = "";
+        private LanguageEnum _questLanguage = LanguageEnum.English;
         string _foundPath = "";
         QuestRewardType _typeOfReward = QuestRewardType.None;
         string _questReward = "";
@@ -50,6 +53,7 @@ namespace RoleplayingQuestCore
         public string QuestEndTitleCard { get => _questEndTitleCard; set => _questEndTitleCard = value; }
         public string QuestStartTitleSound { get => _questStartTitleSound; set => _questStartTitleSound = value; }
         public string QuestEndTitleSound { get => _questEndTitleSound; set => _questEndTitleSound = value; }
+        public LanguageEnum QuestLanguage { get => _questLanguage; set => _questLanguage = value; }
 
         public void ConfigureSubQuest(RoleplayingQuest currentQuest)
         {
