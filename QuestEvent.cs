@@ -35,6 +35,11 @@ namespace RoleplayingQuestCore
         private string _npcAlias = "";
         private bool _eventHasNoReading;
 
+        public QuestEvent()
+        {
+
+        }
+
         public int FaceExpression
         {
             get => _faceExpression;

@@ -1,4 +1,4 @@
-﻿namespace LanguageConversionProxy {
+namespace LanguageConversionProxy {
     public enum LanguageEnum {
         English = 0,
         French = 1,
