@@ -16,7 +16,7 @@ namespace RoleplayingQuestCore
     {
         static ConcurrentDictionary<int, ConcurrentDictionary<string, string>> _dictionary = new ConcurrentDictionary<int, ConcurrentDictionary<string, string>>();
         static ConcurrentDictionary<int, ConcurrentDictionary<string, bool>> _alreadyProcessing = new ConcurrentDictionary<int, ConcurrentDictionary<string, bool>>();
-        static string[] _languageStrings = new string[] { "English", "Français", "Deutsch", "日本語", "中国人", "Svenska" };
+        static string[] _languageStrings = new string[] { "English", "Français", "Deutsch", "日本語", "中国人", "한국인", "Svenska" };
         static LanguageEnum _uiLanguage = LanguageEnum.English;
         private static string _cacheLocation = string.Empty;
         public static string[] LanguageStrings { get => _languageStrings; set => _languageStrings = value; }

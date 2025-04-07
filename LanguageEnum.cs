@@ -5,6 +5,7 @@ namespace LanguageConversionProxy {
         German = 2,
         Japanese = 3,
         Chinese = 4,
-        Korean = 5
+        Korean = 5,
+        Swedish = 6,
     }
 }
