@@ -80,7 +80,7 @@ namespace RoleplayingQuestCore
                                     {
                                         OnError?.Invoke(null, ex.Message + "\r\n" + ex.StackTrace);
                                     }
-                                    return value;
+                                    return value.CleanPunctuation();
                                 }
                                 else
                                 {
@@ -98,6 +98,11 @@ namespace RoleplayingQuestCore
             return translationValue;
         }
 
+        private static string CleanPunctuation(this string value)
+        {
+            return value.Replace(" !", "!").Replace(" ?", "?").Replace(" .", ".").Replace(" !", "!");
+        }
+
         private static string GetCachedTranslation(string translationValue, int languageId)
         {
             if (!_dictionary.ContainsKey(languageId))
@@ -109,7 +114,7 @@ namespace RoleplayingQuestCore
                 var value = _dictionary[languageId][translationValue];
                 if (!string.IsNullOrWhiteSpace(value))
                 {
-                    return value;
+                    return value.CleanPunctuation();
                 }
                 else
                 {
