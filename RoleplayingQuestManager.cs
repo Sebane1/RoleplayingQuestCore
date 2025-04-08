@@ -415,7 +415,7 @@ namespace RoleplayingQuestCore
             }
         }
 
-        public void AttemptProgressingQuestObjective(QuestObjective.ObjectiveTriggerType triggerType = QuestObjective.ObjectiveTriggerType.NormalInteraction, string triggerPhrase = "", bool ignoreDistance = false)
+        public async void AttemptProgressingQuestObjective(QuestObjective.ObjectiveTriggerType triggerType = QuestObjective.ObjectiveTriggerType.NormalInteraction, string triggerPhrase = "", bool ignoreDistance = false)
         {
             foreach (var item in _questChains.Values)
             {
@@ -442,8 +442,9 @@ namespace RoleplayingQuestCore
                                                 conditionsToProceedWereMet = objective.TriggerText == triggerPhrase && objective.SubObjectivesComplete();
                                                 break;
                                             case QuestObjective.ObjectiveTriggerType.SayPhrase:
+                                                var localizedPhrase = await Translator.LocalizeText(triggerPhrase, Translator.UiLanguage, item.QuestLanguage);
                                                 conditionsToProceedWereMet =
-                                                objective.TriggerText.ToLower().Replace(" ", "").Contains(triggerPhrase.ToLower().Replace(" ", ""))
+                                                objective.TriggerText.ToLower().Replace(" ", "").Contains(localizedPhrase.ToLower().Replace(" ", ""))
                                                 && objective.SubObjectivesComplete();
                                                 break;
                                             case QuestObjective.ObjectiveTriggerType.SubObjectivesFinished:
