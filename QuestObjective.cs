@@ -19,6 +19,7 @@ namespace RoleplayingQuestCore
         List<QuestEvent> _questText = new List<QuestEvent>();
         List<QuestObjective> _subObjectives = new List<QuestObjective>();
         string triggerText = "";
+        uint triggerMonsterIndex = 0;
         bool _objectiveCompleted = false;
         private bool _isAPrimaryObjective = true;
 
@@ -56,6 +57,7 @@ namespace RoleplayingQuestCore
         public bool UsesTerritoryDiscriminator { get => _usesTerritoryDiscriminator; set => _usesTerritoryDiscriminator = value; }
         public Collider Collider { get => _collider; set => _collider = value; }
         public bool PlayerPositionIsLockedDuringEvents { get => _playerPositionIsLockedDuringEvents; set => _playerPositionIsLockedDuringEvents = value; }
+        public uint TriggerMonsterIndex { get => triggerMonsterIndex; set => triggerMonsterIndex = value; }
 
         public List<string> EnumerateCharactersAtObjective()
         {

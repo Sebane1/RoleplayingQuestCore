@@ -415,7 +415,7 @@ namespace RoleplayingQuestCore
             }
         }
 
-        public async void AttemptProgressingQuestObjective(QuestObjective.ObjectiveTriggerType triggerType = QuestObjective.ObjectiveTriggerType.NormalInteraction, string triggerPhrase = "", bool ignoreDistance = false)
+        public async void AttemptProgressingQuestObjective(QuestObjective.ObjectiveTriggerType triggerType = QuestObjective.ObjectiveTriggerType.NormalInteraction, string triggerPhrase = "", bool ignoreDistance = false, uint monsterIndex = 0)
         {
             foreach (var item in _questChains.Values)
             {
@@ -454,6 +454,11 @@ namespace RoleplayingQuestCore
                                                 conditionsToProceedWereMet =
                                                triggerPhrase.ToLower().Replace(" ", "").Contains(objective.TriggerText.ToLower().Replace(" ", ""))
                                                 && objective.SubObjectivesComplete();
+
+                                                if (!conditionsToProceedWereMet && monsterIndex == objective.TriggerMonsterIndex)
+                                                {
+                                                    conditionsToProceedWereMet = true;
+                                                }
                                                 break;
                                             case QuestObjective.ObjectiveTriggerType.BoundingTrigger:
                                                 ignoreDistance = true;
@@ -487,7 +492,7 @@ namespace RoleplayingQuestCore
                                                     }
                                                     if (!firstObjective && !objectivesCompleted)
                                                     {
-                                                        OnObjectiveCompleted?.Invoke(this, new Tuple<QuestObjective, RoleplayingQuest> (knownObjective, item));
+                                                        OnObjectiveCompleted?.Invoke(this, new Tuple<QuestObjective, RoleplayingQuest>(knownObjective, item));
                                                     }
                                                 }, item.NpcCustomizations));
                                             }
