@@ -100,7 +100,7 @@ namespace RoleplayingQuestCore
 
         private static string CleanPunctuation(this string value)
         {
-            return value.Replace(" !", "!").Replace(" ?", "?").Replace(" .", ".").Replace(" !", "!");
+            return value.Replace(" !", "!").Replace(" ?", "?").Replace(" .", ".").Replace(" :", ":");
         }
 
         private static string GetCachedTranslation(string translationValue, int languageId)
