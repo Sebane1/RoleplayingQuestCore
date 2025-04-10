@@ -25,7 +25,7 @@ namespace RoleplayingQuestCore
         bool _looksAtPlayerDuringEvent = true;
         bool _eventSetsNewNpcCoorinates = false;
         bool _cameraIsNotAffectedDuringEvent = false;
-        bool _cameraLooksAtTalkingNpc = true;
+        bool _cameraLooksAtTalkingNpc = false;
         bool _cameraUsesDolly = false;
         Vector3 _cameraStartPosition = new Vector3();
         Vector3 _cameraStartRotation = new Vector3();
