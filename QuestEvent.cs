@@ -11,6 +11,7 @@ namespace RoleplayingQuestCore
         private int _bodyExpressionPlayer = 0;
         bool _loopAnimation = false;
         bool _loopAnimationPlayer = false;
+        bool _dialogueWindowIsHidden = false;
         string _npcName = "Name here.";
         string _dialogue = "Text goes here.";
         string _dialogueAudio = "none.mp3";
@@ -23,6 +24,20 @@ namespace RoleplayingQuestCore
         int _timeLimit = 0;
         bool _looksAtPlayerDuringEvent = true;
         bool _eventSetsNewNpcCoorinates = false;
+        bool _cameraIsNotAffectedDuringEvent = false;
+        bool _cameraLooksAtTalkingNpc = true;
+        bool _cameraUsesDolly = false;
+        Vector3 _cameraStartPosition = new Vector3();
+        Vector3 _cameraStartRotation = new Vector3();
+        Vector3 _cameraEndPosition = new Vector3();
+        Vector3 _cameraEndRotation = new Vector3();
+
+        float _cameraDollySpeed = 0;
+        float _cameraStartFov = 0;
+        float _cameraEndFov = 0;
+        float _cameraStartingZoom = 0;
+        float _cameraEndingZoom = 0;
+
         Vector3 _npcMovementPosition = new Vector3();
         Vector3 _npcMovementRotation = new Vector3();
         EventBehaviourType _eventEndBehaviour = EventBehaviourType.None;
@@ -135,6 +150,19 @@ namespace RoleplayingQuestCore
         public bool EventSetsNewNpcCoordinates { get => _eventSetsNewNpcCoorinates; set => _eventSetsNewNpcCoorinates = value; }
         public Vector3 NpcMovementPosition { get => _npcMovementPosition; set => _npcMovementPosition = value; }
         public Vector3 NpcMovementRotation { get => _npcMovementRotation; set => _npcMovementRotation = value; }
+        public bool CameraLooksAtTalkingNpc { get => _cameraLooksAtTalkingNpc; set => _cameraLooksAtTalkingNpc = value; }
+        public bool CameraUsesDolly { get => _cameraUsesDolly; set => _cameraUsesDolly = value; }
+        public Vector3 CameraStartPosition { get => _cameraStartPosition; set => _cameraStartPosition = value; }
+        public Vector3 CameraEndPosition { get => _cameraEndPosition; set => _cameraEndPosition = value; }
+        public float CameraDollySpeed { get => _cameraDollySpeed; set => _cameraDollySpeed = value; }
+        public bool CameraIsNotAffectedDuringEvent { get => _cameraIsNotAffectedDuringEvent; set => _cameraIsNotAffectedDuringEvent = value; }
+        public bool DialogueWindowIsHidden { get => _dialogueWindowIsHidden; set => _dialogueWindowIsHidden = value; }
+        public Vector3 CameraStartRotation { get => _cameraStartRotation; set => _cameraStartRotation = value; }
+        public Vector3 CameraEndRotation { get => _cameraEndRotation; set => _cameraEndRotation = value; }
+        public float CameraStartingFov { get => _cameraStartFov; set => _cameraStartFov = value; }
+        public float CameraEndingFov { get => _cameraEndFov; set => _cameraEndFov = value; }
+        public float CameraStartingZoom { get => _cameraStartingZoom; set => _cameraStartingZoom = value; }
+        public float CameraEndingZoom { get => _cameraEndingZoom; set => _cameraEndingZoom = value; }
 
         public enum EventBehaviourType
         {

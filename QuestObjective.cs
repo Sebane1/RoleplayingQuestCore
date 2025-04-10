@@ -18,16 +18,16 @@ namespace RoleplayingQuestCore
         Dictionary<string, Transform> _npcStartingPositions = new Dictionary<string, Transform>();
         List<QuestEvent> _questText = new List<QuestEvent>();
         List<QuestObjective> _subObjectives = new List<QuestObjective>();
+
         string triggerText = "";
         uint triggerMonsterIndex = 0;
         bool _objectiveCompleted = false;
         private bool _isAPrimaryObjective = true;
-
         private bool _objectiveImmediatelySatisfiesParent = false;
-
         private bool _dontShowOnMap = false;
         private float _maximum3dIndicatorDistance = 48;
         private bool _playerPositionIsLockedDuringEvents = true;
+        private bool _objectiveTriggersCutscene = false;
 
         public QuestObjective()
         {
@@ -58,6 +58,7 @@ namespace RoleplayingQuestCore
         public Collider Collider { get => _collider; set => _collider = value; }
         public bool PlayerPositionIsLockedDuringEvents { get => _playerPositionIsLockedDuringEvents; set => _playerPositionIsLockedDuringEvents = value; }
         public uint TriggerMonsterIndex { get => triggerMonsterIndex; set => triggerMonsterIndex = value; }
+        public bool ObjectiveTriggersCutscene { get => _objectiveTriggersCutscene; set => _objectiveTriggersCutscene = value; }
 
         public List<string> EnumerateCharactersAtObjective()
         {
