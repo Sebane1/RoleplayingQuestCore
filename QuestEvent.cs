@@ -23,7 +23,8 @@ namespace RoleplayingQuestCore
         int _dialogueBoxStyle = 0;
         int _timeLimit = 0;
         bool _looksAtPlayerDuringEvent = true;
-        bool _eventSetsNewNpcCoorinates = false;
+        bool _eventSetsNewNpcCoordinates = false;
+        bool _eventSetsNewCutscenePlayerCoordinates;
         bool _cameraIsNotAffectedDuringEvent = false;
         bool _cameraLooksAtTalkingNpc = false;
         bool _cameraUsesDolly = false;
@@ -40,6 +41,14 @@ namespace RoleplayingQuestCore
 
         Vector3 _npcMovementPosition = new Vector3();
         Vector3 _npcMovementRotation = new Vector3();
+        EventMovementType _npcEventMovementType = EventMovementType.Lerp;
+        int _npcMovementTime = 1000;
+
+        Vector3 _cutscenePlayerMovementPosition = new Vector3();
+        Vector3 _cutscenePlayerMovementRotation = new Vector3();
+        EventMovementType _cutscenePlayerMovementType = EventMovementType.Lerp;
+        int _cutscenePlayerMovementTime = 1000;
+
         EventBehaviourType _eventEndBehaviour = EventBehaviourType.None;
         EventBackgroundType _eventBackgroundType = EventBackgroundType.None;
         EventConditionType _conditionForEventToOccur = EventConditionType.None;
@@ -147,7 +156,7 @@ namespace RoleplayingQuestCore
         public bool EventHasNoReading { get => _eventHasNoReading; set => _eventHasNoReading = value; }
         public bool LoopAnimationPlayer { get => _loopAnimationPlayer; set => _loopAnimationPlayer = value; }
         public bool LooksAtPlayerDuringEvent { get => _looksAtPlayerDuringEvent; set => _looksAtPlayerDuringEvent = value; }
-        public bool EventSetsNewNpcCoordinates { get => _eventSetsNewNpcCoorinates; set => _eventSetsNewNpcCoorinates = value; }
+        public bool EventSetsNewNpcCoordinates { get => _eventSetsNewNpcCoordinates; set => _eventSetsNewNpcCoordinates = value; }
         public Vector3 NpcMovementPosition { get => _npcMovementPosition; set => _npcMovementPosition = value; }
         public Vector3 NpcMovementRotation { get => _npcMovementRotation; set => _npcMovementRotation = value; }
         public bool CameraLooksAtTalkingNpc { get => _cameraLooksAtTalkingNpc; set => _cameraLooksAtTalkingNpc = value; }
@@ -163,7 +172,19 @@ namespace RoleplayingQuestCore
         public float CameraEndingFov { get => _cameraEndFov; set => _cameraEndFov = value; }
         public float CameraStartingZoom { get => _cameraStartingZoom; set => _cameraStartingZoom = value; }
         public float CameraEndingZoom { get => _cameraEndingZoom; set => _cameraEndingZoom = value; }
+        public Vector3 CutscenePlayerMovementPosition { get => _cutscenePlayerMovementPosition; set => _cutscenePlayerMovementPosition = value; }
+        public Vector3 CutscenePlayerMovementRotation { get => _cutscenePlayerMovementRotation; set => _cutscenePlayerMovementRotation = value; }
+        public EventMovementType CutscenePlayerMovementType { get => _cutscenePlayerMovementType; set => _cutscenePlayerMovementType = value; }
+        public EventMovementType NpcEventMovementType { get => _npcEventMovementType; set => _npcEventMovementType = value; }
+        public int NpcMovementTime { get => _npcMovementTime; set => _npcMovementTime = value; }
+        public int CutscenePlayerMovementTime { get => _cutscenePlayerMovementTime; set => _cutscenePlayerMovementTime = value; }
+        public bool EventSetsNewCutscenePlayerCoordinates { get => _eventSetsNewCutscenePlayerCoordinates; set => _eventSetsNewCutscenePlayerCoordinates = value; }
 
+        public enum EventMovementType
+        {
+            Lerp = 0,
+            FixedTime = 1
+        }
         public enum EventBehaviourType
         {
             None = 0,
