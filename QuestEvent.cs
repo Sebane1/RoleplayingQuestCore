@@ -49,11 +49,14 @@ namespace RoleplayingQuestCore
         Vector3 _npcMovementPosition = new Vector3();
         Vector3 _npcMovementRotation = new Vector3();
         EventMovementType _npcEventMovementType = EventMovementType.Lerp;
+        EventMovementAnimation _npcEventMovementAnimation = EventMovementAnimation.Run;
         int _npcMovementTime = 1000;
 
         Vector3 _cutscenePlayerMovementPosition = new Vector3();
         Vector3 _cutscenePlayerMovementRotation = new Vector3();
         EventMovementType _cutscenePlayerMovementType = EventMovementType.Lerp;
+        EventMovementAnimation _cutscenePlayerEventMovementAnimation = EventMovementAnimation.Run;
+
         int _cutscenePlayerMovementTime = 1000;
 
         EventBehaviourType _eventEndBehaviour = EventBehaviourType.None;
@@ -190,6 +193,8 @@ namespace RoleplayingQuestCore
 
         public List<string> SoundEffects { get => _soundEffects; set => _soundEffects = value; }
         public bool StopsCustomBackgroundMusic { get => _stopsCustomBackgroundMusic; set => _stopsCustomBackgroundMusic = value; }
+        public EventMovementAnimation NpcEventMovementAnimation { get => _npcEventMovementAnimation; set => _npcEventMovementAnimation = value; }
+        public EventMovementAnimation CutscenePlayerEventMovementAnimation { get => _cutscenePlayerEventMovementAnimation; set => _cutscenePlayerEventMovementAnimation = value; }
 
         public enum EventMovementType
         {
@@ -238,6 +243,13 @@ namespace RoleplayingQuestCore
             OnlyGlamourerData = 5,
             OnlyCustomizeData = 6,
             OnlyModData = 7
+        }
+
+        public enum EventMovementAnimation
+        {
+            Run = 0,
+            Walk = 1,
+            Swim = 2,
         }
     }
 }
