@@ -14,7 +14,14 @@ namespace RoleplayingQuestCore
         bool _dialogueWindowIsHidden = false;
         string _npcName = "Name here.";
         string _dialogue = "Text goes here.";
+
         string _dialogueAudio = "none.mp3";
+        string _dialogueBackgroundMusic = "nosong.mp3";
+
+        bool _stopsCustomBackgroundMusic = false;
+
+        List<string> _soundEffects = new List<string>();
+
         string _eventBackground = "none.jpg";
         string _appearanceSwap = "none.mcdf";
         string _playerAppearanceSwap = "none.mcdf";
@@ -179,6 +186,10 @@ namespace RoleplayingQuestCore
         public int NpcMovementTime { get => _npcMovementTime; set => _npcMovementTime = value; }
         public int CutscenePlayerMovementTime { get => _cutscenePlayerMovementTime; set => _cutscenePlayerMovementTime = value; }
         public bool EventSetsNewCutscenePlayerCoordinates { get => _eventSetsNewCutscenePlayerCoordinates; set => _eventSetsNewCutscenePlayerCoordinates = value; }
+        public string DialogueBackgroundMusic { get => _dialogueBackgroundMusic; set => _dialogueBackgroundMusic = value; }
+
+        public List<string> SoundEffects { get => _soundEffects; set => _soundEffects = value; }
+        public bool StopsCustomBackgroundMusic { get => _stopsCustomBackgroundMusic; set => _stopsCustomBackgroundMusic = value; }
 
         public enum EventMovementType
         {
