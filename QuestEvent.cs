@@ -247,9 +247,10 @@ namespace RoleplayingQuestCore
 
         public enum EventMovementAnimation
         {
-            Run = 0,
-            Walk = 1,
-            Swim = 2,
+            Automatic = 0,
+            Run = 1,
+            Walk = 2,
+            Swim = 3,
         }
     }
 }
