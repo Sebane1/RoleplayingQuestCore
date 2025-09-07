@@ -12,6 +12,7 @@ namespace RoleplayingQuestCore
         bool _loopAnimation = false;
         bool _loopAnimationPlayer = false;
         bool _dialogueWindowIsHidden = false;
+        int _eventWaitTime = 0;
         string _npcName = "Name here.";
         string _dialogue = "Text goes here.";
 
@@ -195,6 +196,7 @@ namespace RoleplayingQuestCore
         public bool StopsCustomBackgroundMusic { get => _stopsCustomBackgroundMusic; set => _stopsCustomBackgroundMusic = value; }
         public EventMovementAnimation NpcEventMovementAnimation { get => _npcEventMovementAnimation; set => _npcEventMovementAnimation = value; }
         public EventMovementAnimation CutscenePlayerEventMovementAnimation { get => _cutscenePlayerEventMovementAnimation; set => _cutscenePlayerEventMovementAnimation = value; }
+        public int EventWaitTime { get => _eventWaitTime; set => _eventWaitTime = value; }
 
         public enum EventMovementType
         {
