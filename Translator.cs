@@ -17,7 +17,7 @@ namespace RoleplayingQuestCore
         static ConcurrentDictionary<int, ConcurrentDictionary<string, string>> _dictionary = new ConcurrentDictionary<int, ConcurrentDictionary<string, string>>();
         static ConcurrentDictionary<int, ConcurrentDictionary<string, bool>> _alreadyProcessing = new ConcurrentDictionary<int, ConcurrentDictionary<string, bool>>();
         static string[] _languageStrings = new string[] { "English", "Français", "Deutsch", "日本語", "中国人", "한국인", "Svenska" };
-        static LanguageEnum _uiLanguage = LanguageEnum.English;
+        static LanguageEnum _uiLanguage = LanguageEnum.Japanese;
         private static string _cacheLocation = string.Empty;
         public static string[] LanguageStrings { get => _languageStrings; set => _languageStrings = value; }
         public static LanguageEnum UiLanguage { get => _uiLanguage; set => _uiLanguage = value; }
@@ -71,7 +71,7 @@ namespace RoleplayingQuestCore
                                 if (!string.IsNullOrWhiteSpace(value))
                                 {
                                     _dictionary[languageId][translationValue] = value;
-                                    OnTranslationEvent.Invoke(null, translationValue + " -> " + value);
+                                    OnTranslationEvent?.Invoke(new object(), translationValue + " -> " + value);
                                     try
                                     {
                                         await File.WriteAllTextAsync(_cacheLocation, JsonConvert.SerializeObject(_dictionary, Formatting.Indented));
