@@ -176,9 +176,18 @@ namespace RoleplayingQuestCore
 
         public void RemovePartyMember(NpcPartyMember npcPartyMember)
         {
-            if (_npcPartyMembers.ContainsKey(npcPartyMember.QuestId))
+            if (_npcPartyMembers != null)
             {
-                _npcPartyMembers[npcPartyMember.QuestId].Remove(npcPartyMember.NpcName);
+                if (npcPartyMember != null && _npcPartyMembers.ContainsKey(npcPartyMember.QuestId))
+                {
+                    if (!string.IsNullOrEmpty(npcPartyMember.NpcName))
+                    {
+                        if (_npcPartyMembers[npcPartyMember.QuestId] != null && _npcPartyMembers[npcPartyMember.QuestId].ContainsKey(npcPartyMember.NpcName))
+                        {
+                            _npcPartyMembers[npcPartyMember.QuestId].Remove(npcPartyMember.NpcName);
+                        }
+                    }
+                }
             }
         }
 
