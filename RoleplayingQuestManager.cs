@@ -16,6 +16,7 @@ namespace RoleplayingQuestCore
         private Dictionary<string, PlayerAppearanceData> _playerAppearanceData = new Dictionary<string, PlayerAppearanceData>();
         private string _questInstallFolder = "";
         private HashSet<string> _activatedTailObjectives = new HashSet<string>();
+        private HashSet<string> _questsStartedTitleCardsShown = new HashSet<string>();
 
         private float _minimumDistance = 3;
         public event EventHandler<QuestDisplayObject> OnQuestTextTriggered;
@@ -59,6 +60,7 @@ namespace RoleplayingQuestCore
 
         public float MinimumDistance { get => _minimumDistance; set => _minimumDistance = value; }
         public bool IsTailObjectiveActivated(string objectiveId) => _activatedTailObjectives.Contains(objectiveId);
+        public void DeactivateTailObjective(string objectiveId) => _activatedTailObjectives.Remove(objectiveId);
         public Dictionary<string, RoleplayingQuest> QuestChains { get => _questChains; set => _questChains = value; }
         public Dictionary<string, string> CompletedQuestChains { get => _completedQuestChains; set => _completedQuestChains = value; }
         public Dictionary<string, int> QuestProgression { get => _questProgression; set => _questProgression = value; }
@@ -421,8 +423,9 @@ namespace RoleplayingQuestCore
             bool firstObjective = !_questProgression.ContainsKey(roleplayingQuest.QuestId)
             ? true : _questProgression[roleplayingQuest.QuestId] == 0;
             _questProgression[roleplayingQuest.QuestId] = objectiveIndex;
-            if (firstObjective)
+            if (firstObjective && !_questsStartedTitleCardsShown.Contains(roleplayingQuest.QuestId))
             {
+                _questsStartedTitleCardsShown.Add(roleplayingQuest.QuestId);
                 OnQuestStarted?.Invoke(this, roleplayingQuest);
             }
         }
@@ -464,8 +467,9 @@ namespace RoleplayingQuestCore
 
                                             bool firstObjective = !_questProgression.ContainsKey(item.QuestId)
                                                 || _questProgression[item.QuestId] == 0;
-                                            if (firstObjective)
+                                            if (firstObjective && !_questsStartedTitleCardsShown.Contains(item.QuestId))
                                             {
+                                                _questsStartedTitleCardsShown.Add(item.QuestId);
                                                 OnQuestStarted?.Invoke(this, item);
                                             }
                                             // Mark as activated so the tail playback system starts
@@ -519,15 +523,16 @@ namespace RoleplayingQuestCore
                                         {
                                             if (!item.HasQuestAcceptancePopup)
                                             {
+                                                bool firstObjective = _questProgression[item.QuestId] == 0;
+                                                if (firstObjective && !_questsStartedTitleCardsShown.Contains(item.QuestId))
+                                                {
+                                                    _questsStartedTitleCardsShown.Add(item.QuestId);
+                                                    OnQuestStarted?.Invoke(this, item);
+                                                }
                                                 OnQuestTextTriggered?.Invoke(this, new QuestDisplayObject(item, objective, delegate
                                                 {
                                                     var knownQuestItem = item;
                                                     var knownObjective = objective;
-                                                    bool firstObjective = _questProgression[item.QuestId] == 0;
-                                                    if (firstObjective)
-                                                    {
-                                                        OnQuestStarted?.Invoke(this, knownQuestItem);
-                                                    }
                                                     knownObjective.TriggerObjectiveCompletion();
                                                     AddCompletedObjective(item, knownObjective);
                                                     if (knownObjective.IsAPrimaryObjective)

@@ -36,6 +36,8 @@ namespace RoleplayingQuestCore
         float _lookBackMaxInterval = 20f;   // Seconds between look-backs (max)
         float _lookBackDuration = 3f;       // How long the NPC stares behind them
         float _npcSpeed = 5f;
+        float _minimumTailDistance = 3f;    // Fail if closer than this
+        float _maximumTailDistance = 45f;   // Fail if further than this
 
         public string NpcName { get => _npcName; set => _npcName = value; }
         public List<PathWaypoint> Waypoints { get => _waypoints; set => _waypoints = value; }
@@ -47,6 +49,8 @@ namespace RoleplayingQuestCore
         public float LookBackMaxInterval { get => _lookBackMaxInterval; set => _lookBackMaxInterval = value; }
         public float LookBackDuration { get => _lookBackDuration; set => _lookBackDuration = value; }
         public float NpcSpeed { get => _npcSpeed; set => _npcSpeed = value; }
+        public float MinimumTailDistance { get => _minimumTailDistance; set => _minimumTailDistance = value; }
+        public float MaximumTailDistance { get => _maximumTailDistance; set => _maximumTailDistance = value; }
 
         // Runtime-only flag (not serialized to disk)
         [Newtonsoft.Json.JsonIgnore]
