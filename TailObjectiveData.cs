@@ -52,6 +52,9 @@ namespace RoleplayingQuestCore
         public float MinimumTailDistance { get => _minimumTailDistance; set => _minimumTailDistance = value; }
         public float MaximumTailDistance { get => _maximumTailDistance; set => _maximumTailDistance = value; }
 
+        public List<string> LookAroundBlurbs { get; set; } = new List<string> { "Is somebody there?", "I think I hear something...", "Huh?" };
+        public List<string> CaughtBlurbs { get; set; } = new List<string> { "What are you doing?!", "Ahhh!", "Hey, stop following me!" };
+
         // Runtime-only flag (not serialized to disk)
         [Newtonsoft.Json.JsonIgnore]
         [System.Text.Json.Serialization.JsonIgnore]
