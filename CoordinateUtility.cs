@@ -142,5 +142,25 @@ namespace AQuestReborn
 
             return q;
         }
+
+        /// <summary>
+        /// Convert an euler rotation (degrees) to a forward direction vector on the XZ plane.
+        /// Uses the Y component as the yaw angle.
+        /// </summary>
+        public static Vector3 EulerToDirection(Vector3 eulerDegrees)
+        {
+            float yawRad = (float)(eulerDegrees.Y * (Math.PI / 180.0));
+            return new Vector3((float)Math.Sin(yawRad), 0, (float)Math.Cos(yawRad));
+        }
+
+        /// <summary>
+        /// Convert a direction vector on the XZ plane to an euler rotation (degrees).
+        /// Only sets the Y component (yaw).
+        /// </summary>
+        public static Vector3 DirectionToEuler(Vector3 direction)
+        {
+            float yawRad = (float)Math.Atan2(direction.X, direction.Z);
+            return new Vector3(0, (float)(yawRad * (180.0 / Math.PI)), 0);
+        }
     }
 }

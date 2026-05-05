@@ -15,6 +15,7 @@ namespace RoleplayingQuestCore
         private Dictionary<string, Dictionary<string, NpcPartyMember>> _npcPartyMembers = new Dictionary<string, Dictionary<string, NpcPartyMember>>();
         private Dictionary<string, PlayerAppearanceData> _playerAppearanceData = new Dictionary<string, PlayerAppearanceData>();
         private string _questInstallFolder = "";
+        private HashSet<string> _activatedTailObjectives = new HashSet<string>();
 
         private float _minimumDistance = 3;
         public event EventHandler<QuestDisplayObject> OnQuestTextTriggered;
@@ -57,6 +58,7 @@ namespace RoleplayingQuestCore
         }
 
         public float MinimumDistance { get => _minimumDistance; set => _minimumDistance = value; }
+        public bool IsTailObjectiveActivated(string objectiveId) => _activatedTailObjectives.Contains(objectiveId);
         public Dictionary<string, RoleplayingQuest> QuestChains { get => _questChains; set => _questChains = value; }
         public Dictionary<string, string> CompletedQuestChains { get => _completedQuestChains; set => _completedQuestChains = value; }
         public Dictionary<string, int> QuestProgression { get => _questProgression; set => _questProgression = value; }
@@ -344,6 +346,7 @@ namespace RoleplayingQuestCore
             if (resetsProgress)
             {
                 _questProgression[quest.QuestId] = 0;
+                _activatedTailObjectives.RemoveWhere(id => id.StartsWith(quest.QuestId));
                 if (_completedQuestChains.ContainsKey(quest.QuestId))
                 {
                     _completedQuestChains.Remove(quest.QuestId);
@@ -437,10 +440,44 @@ namespace RoleplayingQuestCore
                         {
                             if (!objective.ObjectiveCompleted)
                             {
-                                if (objective.TerritoryId == _mainPlayer.TerritoryId && triggerType == objective.TypeOfObjectiveTrigger)
+                                if (objective.TerritoryId == _mainPlayer.TerritoryId &&
+                                    (triggerType == objective.TypeOfObjectiveTrigger ||
+                                     (triggerType == QuestObjective.ObjectiveTriggerType.NormalInteraction &&
+                                      objective.TypeOfObjectiveTrigger == QuestObjective.ObjectiveTriggerType.TailNpc)))
                                 {
                                     if (Vector3.Distance(objective.Coordinates, _mainPlayer.Position) < _minimumDistance || ignoreDistance)
                                     {
+                                        // TailNpc: first interaction starts the quest and plays dialogue, but does NOT complete.
+                                        // The tail playback system takes over after this.
+                                        if (objective.TypeOfObjectiveTrigger == QuestObjective.ObjectiveTriggerType.TailNpc
+                                            && triggerType == QuestObjective.ObjectiveTriggerType.NormalInteraction
+                                            && !_activatedTailObjectives.Contains(objective.Id))
+                                        {
+                                            // If the quest has an acceptance popup, show it first.
+                                            // After acceptance, HasQuestAcceptancePopup becomes false and
+                                            // the next click will come back here and activate the tail.
+                                            if (item.HasQuestAcceptancePopup)
+                                            {
+                                                OnQuestAcceptancePopup?.Invoke(this, item);
+                                                break;
+                                            }
+
+                                            bool firstObjective = !_questProgression.ContainsKey(item.QuestId)
+                                                || _questProgression[item.QuestId] == 0;
+                                            if (firstObjective)
+                                            {
+                                                OnQuestStarted?.Invoke(this, item);
+                                            }
+                                            // Mark as activated so the tail playback system starts
+                                            _activatedTailObjectives.Add(objective.Id);
+                                            // Play any attached intro dialogue without completing the objective
+                                            if (objective.QuestText.Count > 0)
+                                            {
+                                                OnQuestTextTriggered?.Invoke(this, new QuestDisplayObject(item, objective, delegate { }, item.NpcCustomizations));
+                                            }
+                                            break;
+                                        }
+
                                         bool conditionsToProceedWereMet = false;
                                         switch (objective.TypeOfObjectiveTrigger)
                                         {
@@ -472,6 +509,10 @@ namespace RoleplayingQuestCore
                                             case QuestObjective.ObjectiveTriggerType.BoundingTrigger:
                                                 ignoreDistance = true;
                                                 conditionsToProceedWereMet = objective.Collider.IsPointInsideCollider(_mainPlayer.Position);
+                                                break;
+                                            case QuestObjective.ObjectiveTriggerType.TailNpc:
+                                                // Only completable after the NPC finishes walking the path
+                                                conditionsToProceedWereMet = objective.TailData.PathCompleted && objective.SubObjectivesComplete();
                                                 break;
                                         }
                                         if (conditionsToProceedWereMet)

@@ -26,6 +26,7 @@ namespace RoleplayingQuestCore
         private bool _objectiveImmediatelySatisfiesParent = false;
         private bool _dontShowOnMap = false;
         private float _maximum3dIndicatorDistance = 48;
+        private TailObjectiveData _tailData = new TailObjectiveData();
         private bool _playerPositionIsLockedDuringEvents = true;
         private bool _objectiveTriggersCutscene = false;
 
@@ -59,6 +60,7 @@ namespace RoleplayingQuestCore
         public bool PlayerPositionIsLockedDuringEvents { get => _playerPositionIsLockedDuringEvents; set => _playerPositionIsLockedDuringEvents = value; }
         public uint TriggerMonsterIndex { get => triggerMonsterIndex; set => triggerMonsterIndex = value; }
         public bool ObjectiveTriggersCutscene { get => _objectiveTriggersCutscene; set => _objectiveTriggersCutscene = value; }
+        public TailObjectiveData TailData { get => _tailData; set => _tailData = value; }
 
         public List<string> EnumerateCharactersAtObjective()
         {
@@ -136,6 +138,7 @@ namespace RoleplayingQuestCore
             SubObjectivesFinished = 3,
             KillEnemy = 4,
             BoundingTrigger = 5,
+            TailNpc = 6,
         }
         public override string ToString()
         {
