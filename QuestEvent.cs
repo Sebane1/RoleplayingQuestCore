@@ -69,6 +69,7 @@ namespace RoleplayingQuestCore
         List<BranchingChoice> _branchingChoices = new List<BranchingChoice>();
         private string _npcAlias = "";
         private bool _eventHasNoReading;
+        private List<string> _additionalNpcsLookAtPlayer = new List<string>();
 
         public QuestEvent()
         {
@@ -167,6 +168,7 @@ namespace RoleplayingQuestCore
         public bool EventHasNoReading { get => _eventHasNoReading; set => _eventHasNoReading = value; }
         public bool LoopAnimationPlayer { get => _loopAnimationPlayer; set => _loopAnimationPlayer = value; }
         public bool LooksAtPlayerDuringEvent { get => _looksAtPlayerDuringEvent; set => _looksAtPlayerDuringEvent = value; }
+        public List<string> AdditionalNpcsLookAtPlayer { get => _additionalNpcsLookAtPlayer; set => _additionalNpcsLookAtPlayer = value; }
         public bool EventSetsNewNpcCoordinates { get => _eventSetsNewNpcCoordinates; set => _eventSetsNewNpcCoordinates = value; }
         public Vector3 NpcMovementPosition { get => _npcMovementPosition; set => _npcMovementPosition = value; }
         public Vector3 NpcMovementRotation { get => _npcMovementRotation; set => _npcMovementRotation = value; }
