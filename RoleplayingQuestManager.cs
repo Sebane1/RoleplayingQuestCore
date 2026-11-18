@@ -512,13 +512,9 @@ namespace RoleplayingQuestCore
                                                 break;
                                             case QuestObjective.ObjectiveTriggerType.KillEnemy:
                                                 conditionsToProceedWereMet =
-                                               triggerPhrase.ToLower().Replace(" ", "").Contains(objective.TriggerText.ToLower().Replace(" ", ""))
-                                                && objective.SubObjectivesComplete();
-
-                                                if (!conditionsToProceedWereMet && monsterIndex == objective.TriggerMonsterIndex)
-                                                {
-                                                    conditionsToProceedWereMet = true;
-                                                }
+                                                    ((!string.IsNullOrWhiteSpace(objective.TriggerText) && triggerPhrase.ToLower().Replace(" ", "").Contains(objective.TriggerText.ToLower().Replace(" ", "")))
+                                                     || (monsterIndex > 0 && monsterIndex == objective.TriggerMonsterIndex))
+                                                    && objective.SubObjectivesComplete();
                                                 break;
                                             case QuestObjective.ObjectiveTriggerType.BoundingTrigger:
                                                 ignoreDistance = true;
@@ -565,7 +561,7 @@ namespace RoleplayingQuestCore
                                             {
                                                 OnQuestAcceptancePopup?.Invoke(this, item);
                                             }
-                                            break;
+                                            goto NextQuestChain;
                                         }
                                     }
                                 }
@@ -577,6 +573,7 @@ namespace RoleplayingQuestCore
 
                     }
                 }
+NextQuestChain: ;
             }
         }
 
