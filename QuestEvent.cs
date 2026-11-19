@@ -5,8 +5,14 @@ namespace RoleplayingQuestCore
     public class QuestEvent
     {
         private int objectiveNumberToSkipTo = 0;
-        int _faceExpression = 0;
-        int _bodyExpression = 0;
+        private uint _faceEmoteIndex = 0;
+        private uint _bodyEmoteIndex = 0;
+        private int _faceExpression = 0;
+        private int _bodyExpression = 0;
+
+
+        private uint _faceEmoteIndexPlayer = 0;
+        private uint _bodyEmoteIndexPlayer = 0;
         private int _faceExpressionPlayer = 0;
         private int _bodyExpressionPlayer = 0;
         bool _loopAnimation = false;
@@ -199,6 +205,10 @@ namespace RoleplayingQuestCore
         public EventMovementAnimation NpcEventMovementAnimation { get => _npcEventMovementAnimation; set => _npcEventMovementAnimation = value; }
         public EventMovementAnimation CutscenePlayerEventMovementAnimation { get => _cutscenePlayerEventMovementAnimation; set => _cutscenePlayerEventMovementAnimation = value; }
         public int EventWaitTime { get => _eventWaitTime; set => _eventWaitTime = value; }
+        public uint FaceEmoteIndex { get => _faceEmoteIndex; set => _faceEmoteIndex = value; }
+        public uint BodyEmoteIndex { get => _bodyEmoteIndex; set => _bodyEmoteIndex = value; }
+        public uint FaceEmoteIndexPlayer { get => _faceEmoteIndexPlayer; set => _faceEmoteIndexPlayer = value; }
+        public uint BodyEmoteIndexPlayer { get => _bodyEmoteIndexPlayer; set => _bodyEmoteIndexPlayer = value; }
 
         public enum EventMovementType
         {
