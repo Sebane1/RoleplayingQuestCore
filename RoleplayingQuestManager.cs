@@ -561,7 +561,7 @@ namespace RoleplayingQuestCore
                                             {
                                                 OnQuestAcceptancePopup?.Invoke(this, item);
                                             }
-                                            goto NextQuestChain;
+                                            break;
                                         }
                                     }
                                 }
@@ -573,7 +573,6 @@ namespace RoleplayingQuestCore
 
                     }
                 }
-NextQuestChain: ;
             }
         }
 
